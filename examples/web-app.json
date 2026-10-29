@@ -1,0 +1,18 @@
+{
+  "customer": "ООО «Пример» — веб-приложение",
+  "months": 12,
+  "discount_percent": 0,
+  "vat_percent": 22,
+  "vms": [
+    {"name": "app", "count": 2, "vcpu": 4, "ram_gb": 8, "disks": [{"type": "ssd", "size_gb": 100}], "os": "astra_orel"},
+    {"name": "worker", "count": 1, "vcpu": 8, "ram_gb": 16, "disks": [{"type": "ssd", "size_gb": 50}, {"type": "sata", "size_gb": 500}]}
+  ],
+  "databases": [
+    {"name": "main", "engine": "postgresql", "vcpu": 4, "ram_gb": 16, "disk_type": "ssd", "disk_gb": 200, "managed": true, "backup_copies_gb": 400}
+  ],
+  "object_storage": [
+    {"name": "media", "tier": "standard", "storage_gb": 1000, "egress_gb_per_month": 300, "put_requests_per_month": 2000000, "get_requests_per_month": 50000000}
+  ],
+  "backup": {"protected_gb": 850, "stored_copies_gb": 2000},
+  "network": {"public_ips": 2, "bandwidth_mbps": 100}
+}

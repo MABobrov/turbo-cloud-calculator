@@ -1,0 +1,746 @@
+{
+  "source": "https://turbocloud.ru/prices",
+  "captured_at": "2026-10-29",
+  "currency": "RUB",
+  "vat_included": false,
+  "items": [
+    {
+      "sku": "vm.vcpu",
+      "category": "vm",
+      "name": "Процессор (виртуализация V)",
+      "unit": "шт",
+      "price": "531.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "vm.ram_gb",
+      "category": "vm",
+      "name": "Память (виртуализация V)",
+      "unit": "ГБ",
+      "price": "250.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "vm.vcpu_hc",
+      "category": "vm",
+      "name": "Процессор High Capacity (виртуализация V)",
+      "unit": "шт",
+      "price": "617.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "vm.ram_gb_hc",
+      "category": "vm",
+      "name": "Память High Capacity (виртуализация V)",
+      "unit": "ГБ",
+      "price": "250.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "disk.sata",
+      "category": "storage",
+      "name": "Дисковое пространство SATA",
+      "unit": "ГБ",
+      "price": "3.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "disk.sas",
+      "category": "storage",
+      "name": "Дисковое пространство SAS",
+      "unit": "ГБ",
+      "price": "8.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "disk.ssd",
+      "category": "storage",
+      "name": "Дисковое пространство SSD",
+      "unit": "ГБ",
+      "price": "16.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "os.astra_voronezh",
+      "category": "os",
+      "name": "ОС Astra Linux Воронеж (ФСТЭК)",
+      "unit": "шт",
+      "price": "1846.90",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "os.astra_orel",
+      "category": "os",
+      "name": "ОС Astra Linux Орел",
+      "unit": "шт",
+      "price": "1511.10",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "os.alt_server_10",
+      "category": "os",
+      "name": "ОС Альт Сервер 10",
+      "unit": "шт",
+      "price": "405.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "os.alt8_sp",
+      "category": "os",
+      "name": "ОС Альт 8 СП Сервер (ФСТЭК)",
+      "unit": "шт",
+      "price": "1350.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "os.redos_std",
+      "category": "os",
+      "name": "ОС RED OS стандарт",
+      "unit": "шт",
+      "price": "1000.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "os.redos_fstec",
+      "category": "os",
+      "name": "ОС RED OS (ФСТЭК)",
+      "unit": "шт",
+      "price": "3083.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.ip",
+      "category": "network",
+      "name": "IP-адрес",
+      "unit": "шт",
+      "price": "170.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.subnet_31",
+      "category": "network",
+      "name": "Подсеть публичных IP-адресов /31",
+      "unit": "шт",
+      "price": "340.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.subnet_29",
+      "category": "network",
+      "name": "Подсеть публичных IP-адресов /29",
+      "unit": "шт",
+      "price": "1360.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.subnet_28",
+      "category": "network",
+      "name": "Подсеть публичных IP-адресов /28",
+      "unit": "шт",
+      "price": "2720.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.subnet_27",
+      "category": "network",
+      "name": "Подсеть публичных IP-адресов /27",
+      "unit": "шт",
+      "price": "5440.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_5",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 5 Мбит/с",
+      "unit": "шт",
+      "price": "1027.78",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_10",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 10 Мбит/с",
+      "unit": "шт",
+      "price": "2021.30",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_20",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 20 Мбит/с",
+      "unit": "шт",
+      "price": "3973.14",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_50",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 50 Мбит/с",
+      "unit": "шт",
+      "price": "9236.11",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_100",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 100 Мбит/с",
+      "unit": "шт",
+      "price": "16937.97",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_200",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 200 Мбит/с",
+      "unit": "шт",
+      "price": "18886.11",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_300",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 300 Мбит/с",
+      "unit": "шт",
+      "price": "21077.78",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_400",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 400 Мбит/с",
+      "unit": "шт",
+      "price": "23520.37",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_500",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 500 Мбит/с",
+      "unit": "шт",
+      "price": "26250.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_600",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 600 Мбит/с",
+      "unit": "шт",
+      "price": "29295.37",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_700",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 700 Мбит/с",
+      "unit": "шт",
+      "price": "32692.59",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_800",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 800 Мбит/с",
+      "unit": "шт",
+      "price": "36486.11",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_900",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 900 Мбит/с",
+      "unit": "шт",
+      "price": "40786.11",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_1000",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 1000 Мбит/с",
+      "unit": "шт",
+      "price": "45307.41",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_2000",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 2000 Мбит/с",
+      "unit": "шт",
+      "price": "100218.44",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_3000",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 3000 Мбит/с",
+      "unit": "шт",
+      "price": "155129.47",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_4000",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 4000 Мбит/с",
+      "unit": "шт",
+      "price": "210040.50",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_5000",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 5000 Мбит/с",
+      "unit": "шт",
+      "price": "264951.52",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "net.bw_10000",
+      "category": "network",
+      "name": "Безлимитный доступ в интернет 10000 Мбит/с",
+      "unit": "шт",
+      "price": "539506.67",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.l40s.vcpu",
+      "category": "gpu",
+      "name": "Процессор (кластер GPU L40S)",
+      "unit": "шт",
+      "price": "1150.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.l40s.ram_gb",
+      "category": "gpu",
+      "name": "Память (кластер GPU L40S)",
+      "unit": "ГБ",
+      "price": "210.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.l40s.vram_gb",
+      "category": "gpu",
+      "name": "Видеопамять GPU-карты L40S",
+      "unit": "ГБ",
+      "price": "2190.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.l4.vcpu",
+      "category": "gpu",
+      "name": "Процессор (кластер GPU L4)",
+      "unit": "шт",
+      "price": "800.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.l4.ram_gb",
+      "category": "gpu",
+      "name": "Память (кластер GPU L4)",
+      "unit": "ГБ",
+      "price": "210.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.l4.vram_gb",
+      "category": "gpu",
+      "name": "Видеопамять GPU-карты L4",
+      "unit": "ГБ",
+      "price": "1460.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.h200.vcpu",
+      "category": "gpu",
+      "name": "Процессор (кластер GPU H200)",
+      "unit": "шт",
+      "price": "1150.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.h200.ram_gb",
+      "category": "gpu",
+      "name": "Память (кластер GPU H200)",
+      "unit": "ГБ",
+      "price": "240.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.h200.mig_1g_35gb",
+      "category": "gpu",
+      "name": "GPU-карта H200 (профиль MIG 1g.35gb)",
+      "unit": "шт",
+      "price": "110444.45",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.h200.mig_2g_35gb",
+      "category": "gpu",
+      "name": "GPU-карта H200 (профиль MIG 2g.35gb)",
+      "unit": "шт",
+      "price": "176711.12",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.h200.mig_3g_71gb",
+      "category": "gpu",
+      "name": "GPU-карта H200 (профиль MIG 3g.71gb)",
+      "unit": "шт",
+      "price": "224044.45",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.h200.mig_4g_71gb",
+      "category": "gpu",
+      "name": "GPU-карта H200 (профиль MIG 4g.71gb)",
+      "unit": "шт",
+      "price": "358471.12",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.h200.full",
+      "category": "gpu",
+      "name": "GPU-карта H200",
+      "unit": "шт",
+      "price": "444933.34",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.disk.ssd",
+      "category": "gpu",
+      "name": "Дисковое пространство SSD (GPUaaS)",
+      "unit": "ГБ",
+      "price": "16.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "gpu.disk.sata",
+      "category": "gpu",
+      "name": "Дисковое пространство SATA (GPUaaS)",
+      "unit": "ГБ",
+      "price": "3.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "s3.fixed_gb",
+      "category": "s3",
+      "name": "Фиксированное хранение",
+      "unit": "ГБ",
+      "price": "1.90",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "s3.std_gb",
+      "category": "s3",
+      "name": "Стандартное хранение",
+      "unit": "ГБ",
+      "price": "1.78",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "s3.std_put",
+      "category": "s3",
+      "name": "Стандартное хранение — PUT-запросы",
+      "unit": "1000 шт",
+      "price": "0.50",
+      "period": "once",
+      "per": 1000
+    },
+    {
+      "sku": "s3.std_get",
+      "category": "s3",
+      "name": "Стандартное хранение — GET-запросы",
+      "unit": "10000 шт",
+      "price": "0.40",
+      "period": "once",
+      "per": 10000
+    },
+    {
+      "sku": "s3.std_egress_gb",
+      "category": "s3",
+      "name": "Стандартное хранение — исходящий трафик",
+      "unit": "ГБ",
+      "price": "1.20",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "s3.cold_gb",
+      "category": "s3",
+      "name": "Холодное хранение",
+      "unit": "ГБ",
+      "price": "0.90",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "s3.cold_put",
+      "category": "s3",
+      "name": "Холодное хранение — PUT-запросы",
+      "unit": "1000 шт",
+      "price": "1.60",
+      "period": "once",
+      "per": 1000
+    },
+    {
+      "sku": "s3.cold_get",
+      "category": "s3",
+      "name": "Холодное хранение — GET-запросы",
+      "unit": "10000 шт",
+      "price": "1.10",
+      "period": "once",
+      "per": 10000
+    },
+    {
+      "sku": "s3.cold_egress_gb",
+      "category": "s3",
+      "name": "Холодное хранение — исходящий трафик",
+      "unit": "ГБ",
+      "price": "1.30",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "backup.protected_gb",
+      "category": "backup",
+      "name": "Защищаемое пространство",
+      "unit": "ГБ",
+      "price": "4.50",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "backup.stored_gb",
+      "category": "backup",
+      "name": "Объем хранимой копии",
+      "unit": "ГБ",
+      "price": "1.50",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "k8s.cp_ha",
+      "category": "k8s",
+      "name": "Отказоустойчивый Control Plane Kubernetes (3 мастер-узла)",
+      "unit": "шт",
+      "price": "13939.20",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "k8s.cp_single",
+      "category": "k8s",
+      "name": "Control Plane Kubernetes (1 мастер-узел)",
+      "unit": "шт",
+      "price": "4646.40",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "k8s.vcpu",
+      "category": "k8s",
+      "name": "Процессор для узла",
+      "unit": "шт",
+      "price": "531.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "k8s.ram_gb",
+      "category": "k8s",
+      "name": "Память для узла",
+      "unit": "ГБ",
+      "price": "250.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "k8s.disk.ssd",
+      "category": "k8s",
+      "name": "Дисковое пространство для узла SSD",
+      "unit": "ГБ",
+      "price": "16.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "k8s.disk.sas",
+      "category": "k8s",
+      "name": "Дисковое пространство для узла SAS",
+      "unit": "ГБ",
+      "price": "8.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "k8s.pv.sata",
+      "category": "k8s",
+      "name": "Файловое хранилище постоянных томов SATA",
+      "unit": "ГБ",
+      "price": "3.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "k8s.pv.ssd",
+      "category": "k8s",
+      "name": "Блочное хранилище постоянных томов SSD",
+      "unit": "ГБ",
+      "price": "16.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "k8s.ip",
+      "category": "k8s",
+      "name": "IP-адрес",
+      "unit": "шт",
+      "price": "170.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "k8s.node_admin",
+      "category": "k8s",
+      "name": "Администрирование узла Kubernetes как сервис",
+      "unit": "шт",
+      "price": "2050.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "db.vcpu",
+      "category": "db",
+      "name": "Процессор",
+      "unit": "шт",
+      "price": "531.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "db.ram_gb",
+      "category": "db",
+      "name": "Память",
+      "unit": "ГБ",
+      "price": "250.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "db.disk.sas",
+      "category": "db",
+      "name": "Дисковое пространство SAS",
+      "unit": "ГБ",
+      "price": "8.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "db.disk.ssd",
+      "category": "db",
+      "name": "Дисковое пространство SSD",
+      "unit": "ГБ",
+      "price": "16.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "db.ip",
+      "category": "db",
+      "name": "IP-адрес",
+      "unit": "шт",
+      "price": "170.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "db.admin",
+      "category": "db",
+      "name": "Администрирование узла СУБД как сервис",
+      "unit": "шт",
+      "price": "8000.00",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "db.backup_copy_gb",
+      "category": "db",
+      "name": "Объем хранимой копии",
+      "unit": "ГБ",
+      "price": "2.24",
+      "period": "month",
+      "per": 1
+    },
+    {
+      "sku": "inference.h200_vram_gb_hour",
+      "category": "inference",
+      "name": "Видеопамять GPU-карты H200 SXM (Inference Platform)",
+      "unit": "ГБ·ч",
+      "price": "7.50",
+      "period": "hour",
+      "per": 1
+    },
+    {
+      "sku": "inference.ssd_gb_hour",
+      "category": "inference",
+      "name": "Дисковое пространство SSD (Inference Platform)",
+      "unit": "ГБ·ч",
+      "price": "0.02",
+      "period": "hour",
+      "per": 1
+    }
+  ]
+}
