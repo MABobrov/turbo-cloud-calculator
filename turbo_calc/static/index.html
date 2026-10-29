@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор «Турбо Облако»</title>
+<style>
+  :root { --bg:#f4f6fa; --card:#fff; --line:#dde3ec; --text:#1b2430; --muted:#5b6778; --accent:#0b5fff; --accent2:#e8f0ff; --danger:#b42318; --ok:#067647; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.45 -apple-system,"Segoe UI",Roboto,Arial,sans-serif; color:var(--text); background:var(--bg); }
+  header { background:#0f1f3d; color:#fff; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  header h1 { margin:0; font-size:18px; font-weight:600; }
+  header small { color:#b8c4dc; }
+  main { display:grid; grid-template-columns: minmax(360px, 1fr) minmax(420px, 1.1fr); gap:20px; padding:20px 24px; max-width:1500px; margin:0 auto; }
+  @media (max-width: 980px) { main { grid-template-columns:1fr; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; margin-bottom:16px; }
+  .card h2 { margin:0 0 10px; font-size:15px; font-weight:600; display:flex; justify-content:space-between; align-items:center; }
+  .row { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap:10px; }
+  label { display:flex; flex-direction:column; gap:3px; font-size:12px; color:var(--muted); }
+  label.check { flex-direction:row; align-items:center; gap:6px; font-size:13px; color:var(--text); padding-top:18px; }
+  input, select { font:inherit; padding:7px 9px; border:1px solid var(--line); border-radius:7px; background:#fff; color:var(--text); width:100%; }
+  input:focus, select:focus { outline:2px solid var(--accent2); border-color:var(--accent); }
+  button { font:inherit; border:1px solid var(--line); background:#fff; color:var(--text); padding:7px 12px; border-radius:7px; cursor:pointer; }
+  button:hover { background:#f7f9fc; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; padding:10px 18px; }
+  button.primary:hover { background:#094ed6; }
+  button.link { border:none; background:none; color:var(--accent); padding:4px 6px; }
+  button.danger { color:var(--danger); }
+  .item { border:1px dashed var(--line); border-radius:8px; padding:10px; margin-top:10px; position:relative; }
+  .item .del { position:absolute; top:6px; right:6px; }
+  .toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:6px 0 14px; }
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+  .tabs button.active { background:var(--accent2); border-color:var(--accent); color:var(--accent); font-weight:600; }
+  .muted { color:var(--muted); font-size:13px; }
+  table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  th, td { padding:6px 8px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.02em; }
+  td.num, th.num { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  tr.section td { background:#f7f9fc; font-weight:600; padding-top:10px; }
+  tr.subtotal td { color:var(--muted); }
+  .totals { margin-top:14px; display:grid; grid-template-columns:1fr auto; gap:6px 16px; font-size:15px; }
+  .totals .big { font-size:22px; font-weight:700; }
+  .error { background:#fff1f0; border:1px solid #ffd6d3; color:var(--danger); border-radius:8px; padding:10px 12px; white-space:pre-wrap; font-size:13.5px; }
+  .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:var(--accent2); color:var(--accent); font-size:12px; }
+  pre { background:#0f1f3d; color:#dbe7ff; padding:12px; border-radius:8px; overflow:auto; font-size:12px; max-height:360px; }
+  .empty { color:var(--muted); text-align:center; padding:40px 10px; }
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Калькулятор стоимости «Турбо Облако»</h1><small id="meta">загрузка прайс-листа…</small></div>
+  <div class="toolbar" style="margin:0">
+    <button id="ex-web">Пример: веб-приложение</button>
+    <button id="ex-ai">Пример: ИИ-платформа</button>
+    <button id="clear">Очистить</button>
+    <a class="pill" href="/docs" target="_blank" rel="noopener">OpenAPI</a>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="card">
+      <h2>Параметры расчёта</h2>
+      <div class="row">
+        <label>Клиент<input id="customer" placeholder="ООО «Пример»"></label>
+        <label>Срок, мес.<input id="months" type="number" min="1" max="36" value="12"></label>
+        <label>Скидка, %<input id="discount" type="number" min="0" max="50" step="0.01" value="0"></label>
+        <label>НДС, %<input id="vat" type="number" min="0" max="30" step="0.01" value="22"></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Ресурсы <span class="muted" id="count"></span></h2>
+      <div class="tabs" id="tabs"></div>
+      <div id="lists"></div>
+    </div>
+
+    <div class="card">
+      <h2>Общие сервисы</h2>
+      <div class="row">
+        <label>Публичные IP<input id="net_ips" type="number" min="0" max="256" value="0"></label>
+        <label>Канал в интернет<select id="net_bw"></select></label>
+        <label>Резервное копирование: защищаемый объём, ГБ<input id="bk_protected" type="number" min="0" value="0"></label>
+        <label>Резервное копирование: объём копий, ГБ<input id="bk_stored" type="number" min="0" value="0"></label>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="primary" id="calc">Рассчитать смету</button>
+      <button id="show-json">Показать JSON</button>
+      <span class="muted" id="status"></span>
+    </div>
+    <pre id="json" hidden></pre>
+  </section>
+
+  <section>
+    <div class="card" id="result">
+      <h2>Смета</h2>
+      <div class="empty">Добавьте ресурсы и нажмите «Рассчитать смету»</div>
+    </div>
+  </section>
+</main>
+
+<script>
+"use strict";
+
+// ----------------------------------------------------------- справочники
+const OS = [["", "без лицензии"], ["astra_orel", "Astra Linux Орёл"], ["astra_voronezh", "Astra Linux Воронеж (ФСТЭК)"],
+  ["alt_server_10", "Альт Сервер 10"], ["alt8_sp", "Альт 8 СП (ФСТЭК)"], ["redos_std", "RED OS стандарт"], ["redos_fstec", "RED OS (ФСТЭК)"]];
+const DISKS = [["ssd", "SSD"], ["sas", "SAS"], ["sata", "SATA"]];
+const GPU_DISKS = [["ssd", "SSD"], ["sata", "SATA"]];
+const DB_DISKS = [["ssd", "SSD"], ["sas", "SAS"]];
+const ENGINES = ["postgresql", "mysql", "pangolin", "mongodb", "redis", "clickhouse", "qdrant", "rabbitmq", "kafka", "tarantool"].map(e => [e, e]);
+const CLUSTERS = [["l4", "L4"], ["l40s", "L40S"], ["h200", "H200"]];
+const H200 = [["", "—"], ["mig_1g_35gb", "MIG 1g.35gb"], ["mig_2g_35gb", "MIG 2g.35gb"], ["mig_3g_71gb", "MIG 3g.71gb"], ["mig_4g_71gb", "MIG 4g.71gb"], ["full", "целая карта"]];
+const TIERS = [["standard", "standard"], ["cold", "cold"], ["fixed", "fixed"]];
+const BW = [5, 10, 20, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000, 10000];
+
+// Описание типов ресурсов: ключ конфигурации, заголовок, поля.
+// Поле: [имя, подпись, тип, значение по умолчанию, опции/мин/макс]
+const TYPES = {
+  vms: { title: "Виртуальные машины", fields: [
+    ["name", "Имя", "text", "vm"], ["count", "Кол-во", "int", 1, 1, 1000], ["vcpu", "vCPU", "int", 2, 1, 256], ["ram_gb", "RAM, ГБ", "int", 4, 1, 4096],
+    ["disk_type", "Диск 1: тип", "select", "ssd", DISKS], ["disk_gb", "Диск 1, ГБ", "int", 50, 1, 65536],
+    ["disk2_type", "Диск 2: тип", "select", "sata", DISKS], ["disk2_gb", "Диск 2, ГБ (0 — нет)", "int", 0, 0, 65536], ["os", "ОС", "select", "", OS],
+    ["public_ips", "Публичные IP", "int", 0, 0, 64], ["high_capacity", "High Capacity", "bool", false]] },
+  gpu_vms: { title: "GPU-ВМ", fields: [
+    ["name", "Имя", "text", "gpu-vm"], ["count", "Кол-во", "int", 1, 1, 100], ["cluster", "Кластер", "select", "l4", CLUSTERS], ["vcpu", "vCPU", "int", 4, 1, 256],
+    ["ram_gb", "RAM, ГБ", "int", 16, 1, 4096], ["vram_gb", "VRAM, ГБ (L4/L40S)", "int", 24, 0, 4096], ["h200_profile", "Профиль H200", "select", "", H200],
+    ["h200_cards", "Карт H200", "int", 0, 0, 64], ["disk_type", "Диск 1: тип", "select", "ssd", GPU_DISKS], ["disk_gb", "Диск 1, ГБ", "int", 100, 1, 65536],
+    ["disk2_type", "Диск 2: тип", "select", "sata", GPU_DISKS], ["disk2_gb", "Диск 2, ГБ (0 — нет)", "int", 0, 0, 65536], ["public_ips", "Публичные IP", "int", 0, 0, 64]] },
+  kubernetes: { title: "Kubernetes", fields: [
+    ["name", "Имя", "text", "k8s"], ["nodes", "Узлов", "int", 3, 1, 500], ["node_vcpu", "vCPU на узел", "int", 4, 1, 128], ["node_ram_gb", "RAM на узел, ГБ", "int", 16, 1, 1024],
+    ["node_disk_type", "Диск узла", "select", "ssd", DB_DISKS], ["node_disk_gb", "Диск узла, ГБ", "int", 50, 1, 16384], ["pv_ssd_gb", "Тома SSD, ГБ", "int", 0, 0, 1000000],
+    ["pv_sata_gb", "Тома SATA, ГБ", "int", 0, 0, 1000000], ["public_ips", "Публичные IP", "int", 1, 0, 64], ["ha_control_plane", "Отказоустойчивый control plane", "bool", true], ["managed_nodes", "Администрирование узлов", "bool", false]] },
+  databases: { title: "Управляемые СУБД", fields: [
+    ["name", "Имя", "text", "db"], ["engine", "СУБД", "select", "postgresql", ENGINES], ["count", "Кол-во", "int", 1, 1, 100], ["vcpu", "vCPU", "int", 2, 1, 128],
+    ["ram_gb", "RAM, ГБ", "int", 8, 1, 1024], ["disk_type", "Тип диска", "select", "ssd", DB_DISKS], ["disk_gb", "Диск, ГБ", "int", 100, 1, 65536],
+    ["backup_copies_gb", "Копии, ГБ", "int", 0, 0, 1000000], ["public_ips", "Публичные IP", "int", 0, 0, 16], ["managed", "Администрирование", "bool", true]] },
+  object_storage: { title: "Объектное хранилище S3", fields: [
+    ["name", "Имя", "text", "s3"], ["tier", "Тариф", "select", "standard", TIERS], ["storage_gb", "Объём, ГБ", "int", 1000, 1, 10000000],
+    ["egress_gb_per_month", "Исходящий трафик, ГБ/мес", "int", 0, 0, 10000000], ["put_requests_per_month", "PUT-запросов/мес", "int", 0, 0, 1e12], ["get_requests_per_month", "GET-запросов/мес", "int", 0, 0, 1e12]] },
+  inference: { title: "Inference Platform", fields: [
+    ["name", "Имя", "text", "inference"], ["vram_gb", "VRAM, ГБ", "int", 141, 1, 4096], ["ssd_gb", "SSD, ГБ", "int", 0, 0, 100000], ["hours_per_month", "Часов в месяц", "int", 720, 1, 744]] },
+};
+
+const state = Object.fromEntries(Object.keys(TYPES).map(k => [k, []]));
+let active = "vms";
+const $ = id => document.getElementById(id);
+const fmt = v => Number(v).toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmtQty = v => Number(v).toLocaleString("ru-RU", { maximumFractionDigits: 4 });
+const fmtPrice = v => Number(v) > 0 && Number(v) < 0.01 ? Number(v).toLocaleString("ru-RU", { minimumFractionDigits: 4, maximumFractionDigits: 6 }) : fmt(v);
+
+// ----------------------------------------------------------- форма
+function renderTabs() {
+  $("tabs").innerHTML = Object.entries(TYPES).map(([k, t]) =>
+    `<button data-tab="${k}" class="${k === active ? "active" : ""}">${t.title}${state[k].length ? ` (${state[k].length})` : ""}</button>`).join("");
+  $("tabs").querySelectorAll("button").forEach(b => b.onclick = () => { active = b.dataset.tab; render(); });
+  const total = Object.values(state).reduce((s, a) => s + a.length, 0);
+  $("count").textContent = total ? `всего ${total}` : "";
+}
+
+function fieldHtml(type, idx, f) {
+  const [name, label, kind, , a, b] = f;
+  const v = state[type][idx][name];
+  const id = `${type}-${idx}-${name}`;
+  if (kind === "bool") return `<label class="check"><input type="checkbox" id="${id}" ${v ? "checked" : ""}> ${label}</label>`;
+  if (kind === "select") return `<label>${label}<select id="${id}">${a.map(([val, txt]) => `<option value="${val}" ${val === v ? "selected" : ""}>${txt}</option>`).join("")}</select></label>`;
+  if (kind === "int") return `<label>${label}<input id="${id}" type="number" min="${a}" max="${b}" step="1" value="${v}"></label>`;
+  return `<label>${label}<input id="${id}" type="text" maxlength="80" value="${String(v).replace(/"/g, "&quot;")}"></label>`;
+}
+
+function render() {
+  renderTabs();
+  const t = TYPES[active];
+  const items = state[active];
+  $("lists").innerHTML = `
+    <div class="toolbar"><button id="add">+ Добавить: ${t.title}</button></div>
+    ${items.length ? "" : `<div class="muted">Пока нет ресурсов этого типа.</div>`}
+    ${items.map((_, i) => `<div class="item"><button class="link danger del" data-i="${i}">удалить</button>
+      <div class="row">${t.fields.map(f => fieldHtml(active, i, f)).join("")}</div></div>`).join("")}`;
+  $("add").onclick = () => { items.push(Object.fromEntries(t.fields.map(f => [f[0], f[3]]))); render(); };
+  $("lists").querySelectorAll(".del").forEach(b => b.onclick = () => { items.splice(+b.dataset.i, 1); render(); });
+  items.forEach((item, i) => t.fields.forEach(f => {
+    const el = $(`${active}-${i}-${f[0]}`);
+    el.onchange = () => { item[f[0]] = f[2] === "bool" ? el.checked : f[2] === "int" ? Number(el.value) : el.value; renderTabs(); };
+  }));
+}
+
+// ----------------------------------------------------------- конфигурация
+function toResource(type, item) {
+  const r = { ...item };
+  if (type === "vms" || type === "gpu_vms") {
+    r.disks = [{ type: r.disk_type, size_gb: r.disk_gb }];
+    if (r.disk2_gb > 0) r.disks.push({ type: r.disk2_type, size_gb: r.disk2_gb });
+    delete r.disk_type; delete r.disk_gb; delete r.disk2_type; delete r.disk2_gb;
+  }
+  if (type === "vms" && !r.os) delete r.os;
+  if (type === "gpu_vms") {
+    if (r.cluster === "h200") { delete r.vram_gb; if (!r.h200_profile) delete r.h200_profile; }
+    else { delete r.h200_profile; delete r.h200_cards; }
+  }
+  return r;
+}
+
+function buildConfig() {
+  const cfg = {
+    customer: $("customer").value.trim() || undefined,
+    months: Number($("months").value), discount_percent: Number($("discount").value), vat_percent: Number($("vat").value),
+  };
+  for (const [k, items] of Object.entries(state)) if (items.length) cfg[k] = items.map(it => toResource(k, it));
+  const bk = Number($("bk_protected").value);
+  if (bk > 0) cfg.backup = { protected_gb: bk, stored_copies_gb: Number($("bk_stored").value) };
+  const net = { public_ips: Number($("net_ips").value) };
+  if ($("net_bw").value) net.bandwidth_mbps = Number($("net_bw").value);
+  if (net.public_ips || net.bandwidth_mbps) cfg.network = net;
+  return cfg;
+}
+
+function loadConfig(cfg) {
+  $("customer").value = cfg.customer || "";
+  $("months").value = cfg.months ?? 1; $("discount").value = cfg.discount_percent ?? 0; $("vat").value = cfg.vat_percent ?? 22;
+  for (const k of Object.keys(TYPES)) state[k] = (cfg[k] || []).map(r => {
+    const item = Object.fromEntries(TYPES[k].fields.map(f => [f[0], r[f[0]] ?? f[3]]));
+    if (r.disks && r.disks.length) {
+      item.disk_type = r.disks[0].type; item.disk_gb = r.disks[0].size_gb;
+      if (r.disks[1]) { item.disk2_type = r.disks[1].type; item.disk2_gb = r.disks[1].size_gb; }
+    }
+    return item;
+  });
+  $("bk_protected").value = cfg.backup?.protected_gb ?? 0; $("bk_stored").value = cfg.backup?.stored_copies_gb ?? 0;
+  $("net_ips").value = cfg.network?.public_ips ?? 0; $("net_bw").value = cfg.network?.bandwidth_mbps ?? "";
+  active = Object.keys(TYPES).find(k => state[k].length) || "vms";
+  render();
+}
+
+// ----------------------------------------------------------- расчёт
+async function calculate() {
+  const cfg = buildConfig();
+  $("json").textContent = JSON.stringify(cfg, null, 2);
+  $("status").textContent = "считаю…";
+  const started = performance.now();
+  try {
+    const r = await fetch("/v1/estimate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cfg) });
+    const body = await r.json();
+    $("status").textContent = `${Math.round(performance.now() - started)} мс · ${r.headers.get("X-Request-ID") || ""}`;
+    if (!r.ok) { showError(body.detail); return; }
+    showEstimate(body);
+  } catch (e) { showError(String(e)); $("status").textContent = ""; }
+}
+
+function showError(detail) {
+  const text = Array.isArray(detail) ? detail.map(d => `${(d.loc || []).slice(1).join(".") || "конфигурация"}: ${d.msg}`).join("\n") : String(detail);
+  $("result").innerHTML = `<h2>Смета</h2><div class="error">Ошибка в конфигурации:\n${text}</div>`;
+}
+
+function showEstimate(e) {
+  const rows = e.sections.map(s => `
+    <tr class="section"><td colspan="5">${s.title}</td></tr>
+    ${s.lines.map(l => `<tr><td>${l.name}</td><td class="num">${fmtQty(l.quantity)}</td><td>${l.unit}</td><td class="num">${fmtPrice(l.unit_price)}</td><td class="num">${fmt(l.amount)}</td></tr>`).join("")}
+    <tr class="subtotal"><td colspan="4">Итого по разделу</td><td class="num">${fmt(s.subtotal)}</td></tr>`).join("");
+  $("result").innerHTML = `
+    <h2>Смета${e.customer ? ` — ${e.customer}` : ""} <span class="muted">${e.months} мес. · прайс-лист от ${e.pricelist_captured_at}</span></h2>
+    <table><thead><tr><th>Позиция</th><th class="num">Кол-во</th><th>Ед.</th><th class="num">Цена</th><th class="num">Сумма, ₽</th></tr></thead><tbody>${rows}</tbody></table>
+    <div class="totals">
+      <div>Сумма без НДС</div><div class="num">${fmt(e.subtotal)} ₽</div>
+      ${Number(e.discount_amount) ? `<div>Скидка ${e.discount_percent} %</div><div class="num">− ${fmt(e.discount_amount)} ₽</div>
+      <div>Сумма без НДС после скидки</div><div class="num">${fmt(e.total_ex_vat)} ₽</div>` : ""}
+      <div>НДС ${e.vat_percent} %</div><div class="num">${fmt(e.vat_amount)} ₽</div>
+      <div class="big">Итого с НДС за ${e.months} мес.</div><div class="num big">${fmt(e.total)} ₽</div>
+      <div class="muted">Среднемесячный платёж без НДС</div><div class="num muted">${fmt(e.monthly_ex_vat)} ₽</div>
+    </div>
+    <div class="toolbar" style="margin-top:12px"><button id="dl">Скачать смету (JSON)</button></div>`;
+  $("dl").onclick = () => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(e, null, 2)], { type: "application/json" }));
+    a.download = "smeta.json"; a.click();
+  };
+}
+
+// ----------------------------------------------------------- примеры
+const EXAMPLES = {
+  web: { customer: "ООО «Пример» — веб-приложение", months: 12, vat_percent: 22,
+    vms: [{ name: "app", count: 2, vcpu: 4, ram_gb: 8, disks: [{ type: "ssd", size_gb: 100 }], os: "astra_orel" },
+          { name: "worker", count: 1, vcpu: 8, ram_gb: 16, disks: [{ type: "ssd", size_gb: 50 }, { type: "sata", size_gb: 500 }] }],
+    databases: [{ name: "main", engine: "postgresql", vcpu: 4, ram_gb: 16, disk_type: "ssd", disk_gb: 200, managed: true, backup_copies_gb: 400 }],
+    object_storage: [{ name: "media", tier: "standard", storage_gb: 1000, egress_gb_per_month: 300, put_requests_per_month: 2000000, get_requests_per_month: 50000000 }],
+    backup: { protected_gb: 850, stored_copies_gb: 2000 }, network: { public_ips: 2, bandwidth_mbps: 100 } },
+  ai: { customer: "ИИ-платформа: инференс LLM", months: 3,
+    gpu_vms: [{ name: "llm-h200", cluster: "h200", vcpu: 16, ram_gb: 128, h200_profile: "full", h200_cards: 2, disks: [{ type: "ssd", size_gb: 1000 }], public_ips: 1 },
+              { name: "embed-l4", cluster: "l4", vcpu: 8, ram_gb: 32, vram_gb: 24, disks: [{ type: "ssd", size_gb: 200 }] }],
+    kubernetes: [{ name: "serving", ha_control_plane: true, nodes: 3, node_vcpu: 8, node_ram_gb: 32, node_disk_gb: 100, pv_ssd_gb: 500, public_ips: 1 }],
+    databases: [{ name: "vectors", engine: "qdrant", vcpu: 8, ram_gb: 32, disk_gb: 500 }],
+    inference: [{ name: "qwen-flash", vram_gb: 141, ssd_gb: 300, hours_per_month: 720 }] },
+};
+
+// ----------------------------------------------------------- запуск
+$("net_bw").innerHTML = `<option value="">без канала</option>` + BW.map(b => `<option value="${b}">${b >= 1000 ? b / 1000 + " Гбит/с" : b + " Мбит/с"}</option>`).join("");
+$("calc").onclick = calculate;
+$("show-json").onclick = () => { $("json").textContent = JSON.stringify(buildConfig(), null, 2); $("json").hidden = !$("json").hidden; };
+$("ex-web").onclick = () => { loadConfig(EXAMPLES.web); calculate(); };
+$("ex-ai").onclick = () => { loadConfig(EXAMPLES.ai); calculate(); };
+$("clear").onclick = () => { loadConfig({ months: 12 }); $("result").innerHTML = `<h2>Смета</h2><div class="empty">Добавьте ресурсы и нажмите «Рассчитать смету»</div>`; };
+fetch("/health").then(r => r.json()).then(h => { $("meta").textContent = `прайс-лист turbocloud.ru от ${h.pricelist_captured_at} · ${h.pricelist_items} позиций · v${h.version}`; }).catch(() => { $("meta").textContent = "сервер недоступен"; });
+render();
+// Автозагрузка примера по адресу: /#example=web или /#example=ai
+const auto = new URLSearchParams(location.hash.slice(1)).get("example");
+if (auto && EXAMPLES[auto]) { loadConfig(EXAMPLES[auto]); calculate(); }
+</script>
+</body>
+</html>

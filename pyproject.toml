@@ -32,7 +32,7 @@ turbo-calc = "turbo_calc.cli:main"
 include = ["turbo_calc*"]
 
 [tool.setuptools.package-data]
-turbo_calc = ["data/*.json", "py.typed"]
+turbo_calc = ["data/*.json", "static/*.html", "py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

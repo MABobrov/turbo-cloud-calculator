@@ -13,6 +13,14 @@ def client() -> TestClient:
     return TestClient(create_app())
 
 
+def test_index_page(client):
+    r = client.get("/")
+    assert r.status_code == 200
+    assert r.headers["content-type"].startswith("text/html")
+    assert "Калькулятор стоимости" in r.text
+    assert "/v1/estimate" in r.text
+
+
 def test_health(client):
     r = client.get("/health")
     assert r.status_code == 200

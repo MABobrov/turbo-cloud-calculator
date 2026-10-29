@@ -1,6 +1,7 @@
 """REST API калькулятора на FastAPI.
 
 Эндпоинты:
+- ``GET  /``                  — веб-интерфейс калькулятора (одна HTML-страница).
 - ``GET  /health``            — проверка работоспособности.
 - ``GET  /v1/pricelist``      — прайс-лист (фильтр по категории).
 - ``GET  /v1/pricelist/{sku}``— одна позиция прайс-листа.
@@ -16,9 +17,10 @@ import time
 import uuid
 from collections.abc import Awaitable, Callable
 from decimal import Decimal
+from importlib import resources
 
 from fastapi import FastAPI, HTTPException, Query, Request, Response
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
 
 from turbo_calc import __version__
@@ -99,6 +101,12 @@ def create_app(calculator: Calculator | None = None) -> FastAPI:
     @app.exception_handler(ValueError)
     async def value_error_handler(_: Request, exc: ValueError) -> JSONResponse:
         return JSONResponse(status_code=422, content={"detail": str(exc)})
+
+    @app.get("/", response_class=HTMLResponse, include_in_schema=False)
+    def index() -> HTMLResponse:
+        """Отдаёт веб-интерфейс калькулятора."""
+        page = resources.files("turbo_calc").joinpath("static/index.html").read_text(encoding="utf-8")
+        return HTMLResponse(page)
 
     @app.get("/health", response_model=HealthOut, tags=["service"])
     def health() -> HealthOut:
