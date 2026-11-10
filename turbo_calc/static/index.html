@@ -3,103 +3,238 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>Калькулятор «Турбо Облако»</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b5fff'/%3E%3Cpath d='M9 21a5 5 0 0 1 1-9.9A7 7 0 0 1 23.5 13 4.5 4.5 0 0 1 23 22H10z' fill='%23fff'/%3E%3C/svg%3E">
 <style>
-  :root { --bg:#f4f6fa; --card:#fff; --line:#dde3ec; --text:#1b2430; --muted:#5b6778; --accent:#0b5fff; --accent2:#e8f0ff; --danger:#b42318; --ok:#067647; }
+  :root {
+    color-scheme: light;
+    --bg:#f4f6fa; --card:#fff; --card2:#f7f9fc; --line:#dde3ec; --line2:#c9d2df;
+    --text:#1b2430; --muted:#5b6778; --accent:#0b5fff; --accent-h:#094ed6; --accent2:#e8f0ff;
+    --danger:#b42318; --danger-bg:#fff1f0; --danger-line:#ffd6d3; --ok:#067647;
+    --head:#0f1f3d; --head-text:#fff; --head-muted:#b8c4dc; --code-bg:#0f1f3d; --code-text:#dbe7ff;
+    --shadow:0 1px 2px rgba(16,24,40,.05);
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#6250d6; --s8:#e34948;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg:#0e131b; --card:#161d28; --card2:#1c2533; --line:#2a3445; --line2:#3a465a;
+      --text:#e6ebf2; --muted:#9aa7b9; --accent:#5b8fff; --accent-h:#7aa4ff; --accent2:#1b2a4a;
+      --danger:#ff8a80; --danger-bg:#2a1414; --danger-line:#5a2524; --ok:#4cc38a;
+      --head:#0a1020; --head-muted:#8f9cb8; --code-bg:#0a0f18;
+      --shadow:none;
+      --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#0e131b; --card:#161d28; --card2:#1c2533; --line:#2a3445; --line2:#3a465a;
+    --text:#e6ebf2; --muted:#9aa7b9; --accent:#5b8fff; --accent-h:#7aa4ff; --accent2:#1b2a4a;
+    --danger:#ff8a80; --danger-bg:#2a1414; --danger-line:#5a2524; --ok:#4cc38a;
+    --head:#0a1020; --head-muted:#8f9cb8; --code-bg:#0a0f18;
+    --shadow:none;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+  }
   * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
   body { margin:0; font:15px/1.45 -apple-system,"Segoe UI",Roboto,Arial,sans-serif; color:var(--text); background:var(--bg); }
-  header { background:#0f1f3d; color:#fff; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+  header { background:var(--head); color:var(--head-text); padding:12px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px 16px; flex-wrap:wrap; }
   header h1 { margin:0; font-size:18px; font-weight:600; }
-  header small { color:#b8c4dc; }
-  main { display:grid; grid-template-columns: minmax(360px, 1fr) minmax(420px, 1.1fr); gap:20px; padding:20px 24px; max-width:1500px; margin:0 auto; }
-  @media (max-width: 980px) { main { grid-template-columns:1fr; } }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; margin-bottom:16px; }
-  .card h2 { margin:0 0 10px; font-size:15px; font-weight:600; display:flex; justify-content:space-between; align-items:center; }
-  .row { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap:10px; }
-  label { display:flex; flex-direction:column; gap:3px; font-size:12px; color:var(--muted); }
-  label.check { flex-direction:row; align-items:center; gap:6px; font-size:13px; color:var(--text); padding-top:18px; }
-  input, select { font:inherit; padding:7px 9px; border:1px solid var(--line); border-radius:7px; background:#fff; color:var(--text); width:100%; }
-  input:focus, select:focus { outline:2px solid var(--accent2); border-color:var(--accent); }
-  button { font:inherit; border:1px solid var(--line); background:#fff; color:var(--text); padding:7px 12px; border-radius:7px; cursor:pointer; }
-  button:hover { background:#f7f9fc; }
-  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; padding:10px 18px; }
-  button.primary:hover { background:#094ed6; }
-  button.link { border:none; background:none; color:var(--accent); padding:4px 6px; }
-  button.danger { color:var(--danger); }
-  .item { border:1px dashed var(--line); border-radius:8px; padding:10px; margin-top:10px; position:relative; }
-  .item .del { position:absolute; top:6px; right:6px; }
-  .toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:6px 0 14px; }
+  header small { color:var(--head-muted); }
+  header .toolbar { margin:0; }
+  header button, header a.btn { background:transparent; color:var(--head-text); border-color:rgba(255,255,255,.22); }
+  header button:hover, header a.btn:hover { background:rgba(255,255,255,.08); }
+
+  main { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1.05fr); gap:20px; padding:20px 24px 40px; max-width:1500px; margin:0 auto; align-items:start; }
+  #result-col { position:sticky; top:16px; max-height:calc(100vh - 32px); overflow:auto; border-radius:10px; }
+  @media (max-width: 1020px) {
+    main { grid-template-columns:minmax(0, 1fr); padding:16px 16px 96px; }
+    #result-col { position:static; max-height:none; overflow:visible; }
+    header { padding:12px 16px; }
+  }
+
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; margin-bottom:16px; box-shadow:var(--shadow); }
+  .card > h2 { margin:0 0 12px; font-size:15px; font-weight:600; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
+  .row { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:10px; }
+  label { display:flex; flex-direction:column; gap:3px; font-size:12px; color:var(--muted); min-width:0; }
+  label.check { flex-direction:row; align-items:center; gap:7px; font-size:13px; color:var(--text); padding-top:18px; cursor:pointer; }
+  label.check input { width:16px; height:16px; margin:0; accent-color:var(--accent); }
+  input, select { font:inherit; padding:7px 9px; border:1px solid var(--line2); border-radius:7px; background:var(--card); color:var(--text); width:100%; min-width:0; }
+  input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  input:disabled { opacity:.55; }
+  .field.invalid input, .field.invalid select { border-color:var(--danger); background:var(--danger-bg); }
+  .field .err { color:var(--danger); font-size:11.5px; }
+  .hint { font-size:11.5px; color:var(--muted); }
+
+  button, a.btn { font:inherit; font-size:14px; border:1px solid var(--line2); background:var(--card); color:var(--text); padding:7px 12px; border-radius:7px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
+  button:hover, a.btn:hover { background:var(--card2); }
+  button:disabled { opacity:.6; cursor:default; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; padding:9px 18px; }
+  button.primary:hover { background:var(--accent-h); }
+  button.ghost { border-color:transparent; background:none; color:var(--muted); padding:4px 7px; font-size:13px; }
+  button.ghost:hover { background:var(--card2); color:var(--text); }
+  button.ghost.danger:hover { color:var(--danger); }
+  .toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+
   .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
-  .tabs button.active { background:var(--accent2); border-color:var(--accent); color:var(--accent); font-weight:600; }
-  .muted { color:var(--muted); font-size:13px; }
+  .tabs button { font-size:13px; padding:6px 10px; }
+  .tabs button .n { display:inline-block; min-width:18px; padding:0 5px; border-radius:999px; background:var(--accent2); color:var(--accent); font-size:11.5px; font-weight:600; text-align:center; }
+  .tabs button[aria-selected="true"] { background:var(--accent2); border-color:var(--accent); color:var(--accent); font-weight:600; }
+  .tabs button.has-err { border-color:var(--danger); }
+  .tabs .dot { width:8px; height:8px; border-radius:50%; flex:none; }
+
+  .item { border:1px solid var(--line); border-radius:9px; margin-top:10px; background:var(--card); }
+  .item.invalid { border-color:var(--danger); }
+  .item-head { display:flex; align-items:center; gap:8px; padding:8px 8px 8px 12px; cursor:pointer; user-select:none; }
+  .item-head .chev { color:var(--muted); transition:transform .15s; font-size:11px; width:12px; }
+  .item.collapsed .chev { transform:rotate(-90deg); }
+  .item-head .title { font-weight:600; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .item-head .sum { color:var(--muted); font-size:12.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; min-width:0; }
+  .item-head .cost { font-variant-numeric:tabular-nums; font-size:13px; white-space:nowrap; color:var(--text); }
+  .item-body { padding:4px 12px 12px; border-top:1px dashed var(--line); }
+  .item.collapsed .item-body { display:none; }
+  .item-msg { color:var(--danger); font-size:12.5px; padding:0 12px 8px; }
+  .empty-type { color:var(--muted); font-size:13.5px; padding:14px 0 4px; }
+
+  .actions { position:sticky; bottom:0; z-index:5; background:linear-gradient(to top, var(--bg) 70%, transparent); padding:10px 0 4px; }
+  .switch { display:inline-flex; flex-direction:row; align-items:center; gap:6px; font-size:13px; color:var(--muted); cursor:pointer; }
+  .switch input { width:auto; accent-color:var(--accent); }
+  #status { font-size:12.5px; color:var(--muted); }
+  kbd { font:11px ui-monospace,Menlo,monospace; border:1px solid var(--line2); border-bottom-width:2px; border-radius:4px; padding:0 4px; }
+
+  /* смета */
+  .kpis { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; margin-bottom:14px; }
+  .kpi { background:var(--card2); border:1px solid var(--line); border-radius:9px; padding:10px 12px; min-width:0; }
+  .kpi .k { font-size:12px; color:var(--muted); }
+  .kpi .v { font-size:20px; font-weight:700; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+  .kpi.main .v { color:var(--accent); }
+  @media (max-width: 560px) {
+    .item-head { flex-wrap:wrap; row-gap:0; }
+    .item-head .title { flex:1; }
+    .item-head .sum { order:5; flex-basis:100%; padding-left:20px; white-space:normal; }
+    header h1 { font-size:16px; }
+    header button, header a.btn { font-size:13px; padding:5px 9px; }
+  }
+  @media (max-width: 560px) { .kpis { grid-template-columns:1fr; } .kpi .v { font-size:18px; } }
+
+  .bar { display:flex; height:14px; gap:2px; border-radius:4px; overflow:hidden; margin:2px 0 10px; }
+  .bar span { display:block; height:100%; min-width:3px; cursor:default; }
+  .bar span:hover { filter:brightness(1.12); }
+  .legend { display:grid; grid-template-columns:repeat(auto-fill, minmax(210px, 1fr)); gap:4px 16px; font-size:13px; margin-bottom:16px; }
+  .legend div { display:flex; align-items:center; gap:7px; min-width:0; }
+  .legend .sw { width:10px; height:10px; border-radius:3px; flex:none; }
+  .legend .nm { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
+  .legend .vl { color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  #tip { position:fixed; z-index:50; pointer-events:none; background:var(--card); color:var(--text); border:1px solid var(--line2); border-radius:7px; padding:6px 9px; font-size:12.5px; box-shadow:0 4px 14px rgba(0,0,0,.18); white-space:nowrap; }
+
+  .tablewrap { overflow-x:auto; margin:0 -4px; }
   table { width:100%; border-collapse:collapse; font-size:13.5px; }
   th, td { padding:6px 8px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
-  th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.02em; }
+  th { color:var(--muted); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.03em; }
   td.num, th.num { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
-  tr.section td { background:#f7f9fc; font-weight:600; padding-top:10px; }
-  tr.subtotal td { color:var(--muted); }
+  tbody.sec tr.sh td { background:var(--card2); font-weight:600; cursor:pointer; }
+  tbody.sec tr.sh td .chev { display:inline-block; color:var(--muted); font-size:10px; width:14px; transition:transform .15s; }
+  tbody.sec.collapsed tr.sh td .chev { transform:rotate(-90deg); }
+  tbody.sec.collapsed tr.ln { display:none; }
+  tbody.sec tr.sh .sw { display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:7px; vertical-align:middle; }
+  tbody.sec tr.sh .pm { color:var(--muted); font-weight:400; font-size:12px; }
   .totals { margin-top:14px; display:grid; grid-template-columns:1fr auto; gap:6px 16px; font-size:15px; }
-  .totals .big { font-size:22px; font-weight:700; }
-  .error { background:#fff1f0; border:1px solid #ffd6d3; color:var(--danger); border-radius:8px; padding:10px 12px; white-space:pre-wrap; font-size:13.5px; }
-  .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:var(--accent2); color:var(--accent); font-size:12px; }
-  pre { background:#0f1f3d; color:#dbe7ff; padding:12px; border-radius:8px; overflow:auto; font-size:12px; max-height:360px; }
-  .empty { color:var(--muted); text-align:center; padding:40px 10px; }
+  .totals .big { font-size:21px; font-weight:700; padding-top:6px; border-top:1px solid var(--line); }
+  .error { background:var(--danger-bg); border:1px solid var(--danger-line); color:var(--danger); border-radius:8px; padding:10px 12px; font-size:13.5px; }
+  .error ul { margin:6px 0 0; padding-left:18px; }
+  .error a { color:inherit; }
+  .empty { color:var(--muted); text-align:center; padding:36px 10px; }
+  .empty .toolbar { justify-content:center; margin-top:14px; }
+  .stale { opacity:.55; transition:opacity .2s; }
+
+  /* мобильная плашка итога */
+  #mbar { display:none; }
+  @media (max-width: 1020px) {
+    #mbar.on { display:flex; position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(--card); border-top:1px solid var(--line); padding:10px 16px; align-items:center; justify-content:space-between; gap:10px; box-shadow:0 -4px 16px rgba(0,0,0,.08); }
+    #mbar .v { font-weight:700; font-size:17px; font-variant-numeric:tabular-nums; }
+    #mbar .k { font-size:11.5px; color:var(--muted); }
+    .actions { position:static; }
+  }
+
+  #toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px); opacity:0; transition:.2s; background:var(--head); color:#fff; padding:9px 16px; border-radius:8px; font-size:14px; z-index:60; pointer-events:none; }
+  #toast.on { opacity:1; transform:translateX(-50%); }
+
+  @media print {
+    header .toolbar, #form-col, #mbar, .no-print, #toast { display:none !important; }
+    body { background:#fff; color:#000; }
+    header { background:none; color:#000; padding:0 0 10px; }
+    header small { color:#444; }
+    main { display:block; padding:0; }
+    #result-col { position:static; max-height:none; overflow:visible; }
+    .card { border:none; box-shadow:none; padding:0; }
+    tbody.sec.collapsed tr.ln { display:table-row; }
+    .bar span, .sw { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
 </style>
 </head>
 <body>
 <header>
   <div><h1>Калькулятор стоимости «Турбо Облако»</h1><small id="meta">загрузка прайс-листа…</small></div>
-  <div class="toolbar" style="margin:0">
-    <button id="ex-web">Пример: веб-приложение</button>
-    <button id="ex-ai">Пример: ИИ-платформа</button>
-    <button id="clear">Очистить</button>
-    <a class="pill" href="/docs" target="_blank" rel="noopener">OpenAPI</a>
+  <div class="toolbar">
+    <button id="ex-web" type="button">Пример: веб-приложение</button>
+    <button id="ex-ai" type="button">Пример: ИИ-платформа</button>
+    <button id="clear" type="button">Очистить</button>
+    <button id="theme" type="button" title="Тема оформления" aria-label="Тема оформления">◐ Авто</button>
+    <a class="btn" href="/docs" target="_blank" rel="noopener">API</a>
   </div>
 </header>
 
 <main>
-  <section>
+  <section id="form-col" aria-label="Конфигурация">
     <div class="card">
       <h2>Параметры расчёта</h2>
       <div class="row">
-        <label>Клиент<input id="customer" placeholder="ООО «Пример»"></label>
-        <label>Срок, мес.<input id="months" type="number" min="1" max="36" value="12"></label>
-        <label>Скидка, %<input id="discount" type="number" min="0" max="50" step="0.01" value="0"></label>
-        <label>НДС, %<input id="vat" type="number" min="0" max="30" step="0.01" value="22"></label>
+        <label class="field" data-path="customer">Клиент<input id="customer" maxlength="200" placeholder="ООО «Пример»" autocomplete="organization"></label>
+        <label class="field" data-path="months">Срок, мес.<input id="months" type="number" inputmode="numeric" min="1" max="36" value="12"></label>
+        <label class="field" data-path="discount_percent">Скидка, %<input id="discount" type="number" inputmode="decimal" min="0" max="50" step="0.01" value="0"></label>
+        <label class="field" data-path="vat_percent">НДС, %<input id="vat" type="number" inputmode="decimal" min="0" max="30" step="0.01" value="22"></label>
       </div>
     </div>
 
     <div class="card">
-      <h2>Ресурсы <span class="muted" id="count"></span></h2>
-      <div class="tabs" id="tabs"></div>
-      <div id="lists"></div>
+      <h2>Ресурсы <span class="hint" id="count"></span></h2>
+      <div class="tabs" id="tabs" role="tablist"></div>
+      <div id="lists" role="tabpanel"></div>
     </div>
 
     <div class="card">
       <h2>Общие сервисы</h2>
       <div class="row">
-        <label>Публичные IP<input id="net_ips" type="number" min="0" max="256" value="0"></label>
-        <label>Канал в интернет<select id="net_bw"></select></label>
-        <label>Резервное копирование: защищаемый объём, ГБ<input id="bk_protected" type="number" min="0" value="0"></label>
-        <label>Резервное копирование: объём копий, ГБ<input id="bk_stored" type="number" min="0" value="0"></label>
+        <label class="field" data-path="network.public_ips">Публичные IP<input id="net_ips" type="number" inputmode="numeric" min="0" max="256" value="0"></label>
+        <label class="field" data-path="network.bandwidth_mbps">Канал в интернет<select id="net_bw"></select></label>
+        <label class="field" data-path="backup.protected_gb">Бэкап: защищаемый объём, ГБ<input id="bk_protected" type="number" inputmode="numeric" min="0" value="0"></label>
+        <label class="field" data-path="backup.stored_copies_gb">Бэкап: объём копий, ГБ<input id="bk_stored" type="number" inputmode="numeric" min="0" value="0"></label>
       </div>
     </div>
 
-    <div class="toolbar">
-      <button class="primary" id="calc">Рассчитать смету</button>
-      <button id="show-json">Показать JSON</button>
-      <span class="muted" id="status"></span>
+    <div class="actions">
+      <div class="toolbar">
+        <button class="primary" id="calc" type="button">Рассчитать смету</button>
+        <label class="switch" title="Пересчитывать смету при каждом изменении"><input type="checkbox" id="auto" checked> автопересчёт</label>
+        <span id="status" aria-live="polite"></span>
+      </div>
     </div>
-    <pre id="json" hidden></pre>
   </section>
 
-  <section>
-    <div class="card" id="result">
-      <h2>Смета</h2>
-      <div class="empty">Добавьте ресурсы и нажмите «Рассчитать смету»</div>
-    </div>
+  <section id="result-col" aria-label="Смета">
+    <div class="card" id="result" aria-live="polite"></div>
   </section>
 </main>
+
+<div id="mbar" aria-hidden="true">
+  <div><div class="k" id="mbar-k">Итого с НДС</div><div class="v" id="mbar-v">—</div></div>
+  <button type="button" id="mbar-go">К смете ↓</button>
+</div>
+<div id="tip" hidden></div>
+<div id="toast" role="status"></div>
 
 <script>
 "use strict";
@@ -110,173 +245,549 @@ const OS = [["", "без лицензии"], ["astra_orel", "Astra Linux Орё�
 const DISKS = [["ssd", "SSD"], ["sas", "SAS"], ["sata", "SATA"]];
 const GPU_DISKS = [["ssd", "SSD"], ["sata", "SATA"]];
 const DB_DISKS = [["ssd", "SSD"], ["sas", "SAS"]];
-const ENGINES = ["postgresql", "mysql", "pangolin", "mongodb", "redis", "clickhouse", "qdrant", "rabbitmq", "kafka", "tarantool"].map(e => [e, e]);
+const ENGINES = [["postgresql", "PostgreSQL"], ["mysql", "MySQL"], ["pangolin", "Pangolin"], ["mongodb", "MongoDB"], ["redis", "Redis"],
+  ["clickhouse", "ClickHouse"], ["qdrant", "Qdrant"], ["rabbitmq", "RabbitMQ"], ["kafka", "Kafka"], ["tarantool", "Tarantool"]];
 const CLUSTERS = [["l4", "L4"], ["l40s", "L40S"], ["h200", "H200"]];
-const H200 = [["", "—"], ["mig_1g_35gb", "MIG 1g.35gb"], ["mig_2g_35gb", "MIG 2g.35gb"], ["mig_3g_71gb", "MIG 3g.71gb"], ["mig_4g_71gb", "MIG 4g.71gb"], ["full", "целая карта"]];
-const TIERS = [["standard", "standard"], ["cold", "cold"], ["fixed", "fixed"]];
+const H200 = [["mig_1g_35gb", "MIG 1g.35gb"], ["mig_2g_35gb", "MIG 2g.35gb"], ["mig_3g_71gb", "MIG 3g.71gb"], ["mig_4g_71gb", "MIG 4g.71gb"], ["full", "целая карта"]];
+const TIERS = [["standard", "стандартный"], ["cold", "холодный"], ["fixed", "фиксированный"]];
 const BW = [5, 10, 20, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000, 10000];
+const bwLabel = b => b >= 1000 ? `${b / 1000} Гбит/с` : `${b} Мбит/с`;
+const lbl = (list, v) => (list.find(x => x[0] === v) || [, v])[1];
 
-// Описание типов ресурсов: ключ конфигурации, заголовок, поля.
-// Поле: [имя, подпись, тип, значение по умолчанию, опции/мин/макс]
+// Поле: { k: ключ, l: подпись, t: text|int|select|bool, d: по умолчанию, o: опции, min, max, when: (item) => показывать, re: перерисовать при смене }
+const isH200 = it => it.cluster === "h200";
 const TYPES = {
-  vms: { title: "Виртуальные машины", fields: [
-    ["name", "Имя", "text", "vm"], ["count", "Кол-во", "int", 1, 1, 1000], ["vcpu", "vCPU", "int", 2, 1, 256], ["ram_gb", "RAM, ГБ", "int", 4, 1, 4096],
-    ["disk_type", "Диск 1: тип", "select", "ssd", DISKS], ["disk_gb", "Диск 1, ГБ", "int", 50, 1, 65536],
-    ["disk2_type", "Диск 2: тип", "select", "sata", DISKS], ["disk2_gb", "Диск 2, ГБ (0 — нет)", "int", 0, 0, 65536], ["os", "ОС", "select", "", OS],
-    ["public_ips", "Публичные IP", "int", 0, 0, 64], ["high_capacity", "High Capacity", "bool", false]] },
-  gpu_vms: { title: "GPU-ВМ", fields: [
-    ["name", "Имя", "text", "gpu-vm"], ["count", "Кол-во", "int", 1, 1, 100], ["cluster", "Кластер", "select", "l4", CLUSTERS], ["vcpu", "vCPU", "int", 4, 1, 256],
-    ["ram_gb", "RAM, ГБ", "int", 16, 1, 4096], ["vram_gb", "VRAM, ГБ (L4/L40S)", "int", 24, 0, 4096], ["h200_profile", "Профиль H200", "select", "", H200],
-    ["h200_cards", "Карт H200", "int", 0, 0, 64], ["disk_type", "Диск 1: тип", "select", "ssd", GPU_DISKS], ["disk_gb", "Диск 1, ГБ", "int", 100, 1, 65536],
-    ["disk2_type", "Диск 2: тип", "select", "sata", GPU_DISKS], ["disk2_gb", "Диск 2, ГБ (0 — нет)", "int", 0, 0, 65536], ["public_ips", "Публичные IP", "int", 0, 0, 64]] },
-  kubernetes: { title: "Kubernetes", fields: [
-    ["name", "Имя", "text", "k8s"], ["nodes", "Узлов", "int", 3, 1, 500], ["node_vcpu", "vCPU на узел", "int", 4, 1, 128], ["node_ram_gb", "RAM на узел, ГБ", "int", 16, 1, 1024],
-    ["node_disk_type", "Диск узла", "select", "ssd", DB_DISKS], ["node_disk_gb", "Диск узла, ГБ", "int", 50, 1, 16384], ["pv_ssd_gb", "Тома SSD, ГБ", "int", 0, 0, 1000000],
-    ["pv_sata_gb", "Тома SATA, ГБ", "int", 0, 0, 1000000], ["public_ips", "Публичные IP", "int", 1, 0, 64], ["ha_control_plane", "Отказоустойчивый control plane", "bool", true], ["managed_nodes", "Администрирование узлов", "bool", false]] },
-  databases: { title: "Управляемые СУБД", fields: [
-    ["name", "Имя", "text", "db"], ["engine", "СУБД", "select", "postgresql", ENGINES], ["count", "Кол-во", "int", 1, 1, 100], ["vcpu", "vCPU", "int", 2, 1, 128],
-    ["ram_gb", "RAM, ГБ", "int", 8, 1, 1024], ["disk_type", "Тип диска", "select", "ssd", DB_DISKS], ["disk_gb", "Диск, ГБ", "int", 100, 1, 65536],
-    ["backup_copies_gb", "Копии, ГБ", "int", 0, 0, 1000000], ["public_ips", "Публичные IP", "int", 0, 0, 16], ["managed", "Администрирование", "bool", true]] },
-  object_storage: { title: "Объектное хранилище S3", fields: [
-    ["name", "Имя", "text", "s3"], ["tier", "Тариф", "select", "standard", TIERS], ["storage_gb", "Объём, ГБ", "int", 1000, 1, 10000000],
-    ["egress_gb_per_month", "Исходящий трафик, ГБ/мес", "int", 0, 0, 10000000], ["put_requests_per_month", "PUT-запросов/мес", "int", 0, 0, 1e12], ["get_requests_per_month", "GET-запросов/мес", "int", 0, 0, 1e12]] },
-  inference: { title: "Inference Platform", fields: [
-    ["name", "Имя", "text", "inference"], ["vram_gb", "VRAM, ГБ", "int", 141, 1, 4096], ["ssd_gb", "SSD, ГБ", "int", 0, 0, 100000], ["hours_per_month", "Часов в месяц", "int", 720, 1, 744]] },
+  vms: { title: "Виртуальные машины", short: "ВМ", color: "--s1",
+    fields: [
+      { k: "name", l: "Имя", t: "text", d: "vm" }, { k: "count", l: "Кол-во", t: "int", d: 1, min: 1, max: 1000 },
+      { k: "vcpu", l: "vCPU", t: "int", d: 2, min: 1, max: 256 }, { k: "ram_gb", l: "RAM, ГБ", t: "int", d: 4, min: 1, max: 4096 },
+      { k: "disk_type", l: "Диск 1: тип", t: "select", d: "ssd", o: DISKS }, { k: "disk_gb", l: "Диск 1, ГБ", t: "int", d: 50, min: 1, max: 65536 },
+      { k: "disk2_type", l: "Диск 2: тип", t: "select", d: "sata", o: DISKS }, { k: "disk2_gb", l: "Диск 2, ГБ (0 — нет)", t: "int", d: 0, min: 0, max: 65536 },
+      { k: "os", l: "Лицензия ОС", t: "select", d: "", o: OS }, { k: "public_ips", l: "Публичные IP", t: "int", d: 0, min: 0, max: 64 },
+      { k: "high_capacity", l: "High Capacity", t: "bool", d: false }],
+    summary: it => `${it.count > 1 ? it.count + " × " : ""}${it.vcpu} vCPU · ${it.ram_gb} ГБ · ${lbl(DISKS, it.disk_type)} ${it.disk_gb} ГБ${it.disk2_gb > 0 ? ` + ${lbl(DISKS, it.disk2_type)} ${it.disk2_gb} ГБ` : ""}${it.os ? " · " + lbl(OS, it.os) : ""}${it.high_capacity ? " · HC" : ""}` },
+  gpu_vms: { title: "GPU-ВМ", short: "GPU", color: "--s2",
+    fields: [
+      { k: "name", l: "Имя", t: "text", d: "gpu-vm" }, { k: "count", l: "Кол-во", t: "int", d: 1, min: 1, max: 100 },
+      { k: "cluster", l: "Кластер", t: "select", d: "l4", o: CLUSTERS, re: true },
+      { k: "vcpu", l: "vCPU", t: "int", d: 4, min: 1, max: 256 }, { k: "ram_gb", l: "RAM, ГБ", t: "int", d: 16, min: 1, max: 4096 },
+      { k: "vram_gb", l: "VRAM, ГБ", t: "int", d: 24, min: 1, max: 4096, when: it => !isH200(it) },
+      { k: "h200_profile", l: "Профиль H200", t: "select", d: "full", o: H200, when: isH200 },
+      { k: "h200_cards", l: "Карт H200", t: "int", d: 1, min: 1, max: 64, when: isH200 },
+      { k: "disk_type", l: "Диск 1: тип", t: "select", d: "ssd", o: GPU_DISKS }, { k: "disk_gb", l: "Диск 1, ГБ", t: "int", d: 100, min: 1, max: 65536 },
+      { k: "disk2_type", l: "Диск 2: тип", t: "select", d: "sata", o: GPU_DISKS }, { k: "disk2_gb", l: "Диск 2, ГБ (0 — нет)", t: "int", d: 0, min: 0, max: 65536 },
+      { k: "public_ips", l: "Публичные IP", t: "int", d: 0, min: 0, max: 64 }],
+    summary: it => `${it.count > 1 ? it.count + " × " : ""}${lbl(CLUSTERS, it.cluster)} · ${isH200(it) ? `${it.h200_cards} × ${lbl(H200, it.h200_profile)}` : `${it.vram_gb} ГБ VRAM`} · ${it.vcpu} vCPU · ${it.ram_gb} ГБ` },
+  kubernetes: { title: "Kubernetes", short: "K8s", color: "--s3",
+    fields: [
+      { k: "name", l: "Имя", t: "text", d: "k8s" }, { k: "nodes", l: "Узлов", t: "int", d: 3, min: 1, max: 500 },
+      { k: "node_vcpu", l: "vCPU на узел", t: "int", d: 4, min: 1, max: 128 }, { k: "node_ram_gb", l: "RAM на узел, ГБ", t: "int", d: 16, min: 1, max: 1024 },
+      { k: "node_disk_type", l: "Диск узла", t: "select", d: "ssd", o: DB_DISKS }, { k: "node_disk_gb", l: "Диск узла, ГБ", t: "int", d: 50, min: 1, max: 16384 },
+      { k: "pv_ssd_gb", l: "Тома SSD, ГБ", t: "int", d: 0, min: 0, max: 1000000 }, { k: "pv_sata_gb", l: "Тома SATA, ГБ", t: "int", d: 0, min: 0, max: 1000000 },
+      { k: "public_ips", l: "Публичные IP", t: "int", d: 1, min: 0, max: 64 },
+      { k: "ha_control_plane", l: "Отказоустойчивый control plane", t: "bool", d: true }, { k: "managed_nodes", l: "Администрирование узлов", t: "bool", d: false }],
+    summary: it => `${it.nodes} узл. × ${it.node_vcpu} vCPU / ${it.node_ram_gb} ГБ · ${it.ha_control_plane ? "HA" : "одиночный"} control plane` },
+  databases: { title: "Управляемые СУБД", short: "СУБД", color: "--s4",
+    fields: [
+      { k: "name", l: "Имя", t: "text", d: "db" }, { k: "engine", l: "СУБД", t: "select", d: "postgresql", o: ENGINES },
+      { k: "count", l: "Кол-во", t: "int", d: 1, min: 1, max: 100 }, { k: "vcpu", l: "vCPU", t: "int", d: 2, min: 1, max: 128 },
+      { k: "ram_gb", l: "RAM, ГБ", t: "int", d: 8, min: 1, max: 1024 }, { k: "disk_type", l: "Тип диска", t: "select", d: "ssd", o: DB_DISKS },
+      { k: "disk_gb", l: "Диск, ГБ", t: "int", d: 100, min: 1, max: 65536 }, { k: "backup_copies_gb", l: "Резервные копии, ГБ", t: "int", d: 0, min: 0, max: 1000000 },
+      { k: "public_ips", l: "Публичные IP", t: "int", d: 0, min: 0, max: 16 }, { k: "managed", l: "Администрирование", t: "bool", d: true }],
+    summary: it => `${lbl(ENGINES, it.engine)}${it.count > 1 ? " × " + it.count : ""} · ${it.vcpu} vCPU · ${it.ram_gb} ГБ · ${lbl(DB_DISKS, it.disk_type)} ${it.disk_gb} ГБ` },
+  object_storage: { title: "Объектное хранилище S3", short: "S3", color: "--s5",
+    fields: [
+      { k: "name", l: "Имя", t: "text", d: "s3" }, { k: "tier", l: "Тариф", t: "select", d: "standard", o: TIERS, re: true },
+      { k: "storage_gb", l: "Объём, ГБ", t: "int", d: 1000, min: 1, max: 10000000 },
+      { k: "egress_gb_per_month", l: "Исходящий трафик, ГБ/мес", t: "int", d: 0, min: 0, max: 10000000, when: it => it.tier !== "fixed" },
+      { k: "put_requests_per_month", l: "PUT-запросов/мес", t: "int", d: 0, min: 0, max: 1e12, when: it => it.tier !== "fixed" },
+      { k: "get_requests_per_month", l: "GET-запросов/мес", t: "int", d: 0, min: 0, max: 1e12, when: it => it.tier !== "fixed" }],
+    summary: it => `${lbl(TIERS, it.tier)} · ${fmtInt(it.storage_gb)} ГБ${it.tier !== "fixed" && it.egress_gb_per_month ? ` · трафик ${fmtInt(it.egress_gb_per_month)} ГБ/мес` : ""}` },
+  inference: { title: "Inference Platform", short: "Inference", color: "--s7",
+    fields: [
+      { k: "name", l: "Имя", t: "text", d: "inference" }, { k: "vram_gb", l: "VRAM, ГБ", t: "int", d: 141, min: 1, max: 4096 },
+      { k: "ssd_gb", l: "SSD, ГБ", t: "int", d: 0, min: 0, max: 100000 }, { k: "hours_per_month", l: "Часов в месяц", t: "int", d: 720, min: 1, max: 744 }],
+    summary: it => `${it.vram_gb} ГБ VRAM · ${it.ssd_gb} ГБ SSD · ${it.hours_per_month} ч/мес` },
+};
+// Порядок разделов в смете совпадает с Calculator.estimate: ресурсы по типам, затем бэкап, inference, сеть.
+const SECTION_ORDER = ["vms", "gpu_vms", "kubernetes", "databases", "object_storage", "backup", "inference", "network"];
+const CATS = {
+  vms: TYPES.vms, gpu_vms: TYPES.gpu_vms, kubernetes: TYPES.kubernetes, databases: TYPES.databases, object_storage: TYPES.object_storage,
+  backup: { title: "Резервное копирование", color: "--s6" }, inference: TYPES.inference, network: { title: "Сеть", color: "--s8" },
 };
 
-const state = Object.fromEntries(Object.keys(TYPES).map(k => [k, []]));
-let active = "vms";
+// ----------------------------------------------------------- утилиты
 const $ = id => document.getElementById(id);
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const fmt = v => Number(v).toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmtInt = v => Number(v).toLocaleString("ru-RU", { maximumFractionDigits: 0 });
 const fmtQty = v => Number(v).toLocaleString("ru-RU", { maximumFractionDigits: 4 });
 const fmtPrice = v => Number(v) > 0 && Number(v) < 0.01 ? Number(v).toLocaleString("ru-RU", { minimumFractionDigits: 4, maximumFractionDigits: 6 }) : fmt(v);
+const rub = v => `${fmt(v)} ₽`;
+const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch { /* приватный режим */ } },
+};
+function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 2200); }
+function download(name, content, type) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([content], { type }));
+  a.download = name; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+const fileSlug = s => (s || "smeta").replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "").slice(0, 60) || "smeta";
+
+// ----------------------------------------------------------- состояние
+const state = Object.fromEntries(Object.keys(TYPES).map(k => [k, []]));
+let active = "vms";
+let lastEstimate = null;   // последняя успешная смета
+let lastConfig = null;     // конфигурация, по которой она посчитана
+let errors = { items: {}, fields: {}, general: [] };
+const collapsed = new WeakSet();
+
+const newItem = type => {
+  const t = TYPES[type], n = state[type].length + 1;
+  const it = Object.fromEntries(t.fields.map(f => [f.k, f.d]));
+  it.name = n > 1 ? `${it.name}-${n}` : it.name;
+  return it;
+};
 
 // ----------------------------------------------------------- форма
 function renderTabs() {
-  $("tabs").innerHTML = Object.entries(TYPES).map(([k, t]) =>
-    `<button data-tab="${k}" class="${k === active ? "active" : ""}">${t.title}${state[k].length ? ` (${state[k].length})` : ""}</button>`).join("");
-  $("tabs").querySelectorAll("button").forEach(b => b.onclick = () => { active = b.dataset.tab; render(); });
+  $("tabs").innerHTML = Object.entries(TYPES).map(([k, t]) => {
+    const n = state[k].length, bad = Object.keys(errors.items).some(p => p.startsWith(k + "."));
+    return `<button type="button" role="tab" data-tab="${k}" aria-selected="${k === active}" class="${bad ? "has-err" : ""}">
+      <span class="dot" style="background:var(${t.color})"></span>${esc(t.title)}${n ? ` <span class="n">${n}</span>` : ""}</button>`;
+  }).join("");
   const total = Object.values(state).reduce((s, a) => s + a.length, 0);
   $("count").textContent = total ? `всего ${total}` : "";
 }
 
-function fieldHtml(type, idx, f) {
-  const [name, label, kind, , a, b] = f;
-  const v = state[type][idx][name];
-  const id = `${type}-${idx}-${name}`;
-  if (kind === "bool") return `<label class="check"><input type="checkbox" id="${id}" ${v ? "checked" : ""}> ${label}</label>`;
-  if (kind === "select") return `<label>${label}<select id="${id}">${a.map(([val, txt]) => `<option value="${val}" ${val === v ? "selected" : ""}>${txt}</option>`).join("")}</select></label>`;
-  if (kind === "int") return `<label>${label}<input id="${id}" type="number" min="${a}" max="${b}" step="1" value="${v}"></label>`;
-  return `<label>${label}<input id="${id}" type="text" maxlength="80" value="${String(v).replace(/"/g, "&quot;")}"></label>`;
+function fieldHtml(type, idx, f, item) {
+  const v = item[f.k], id = `${type}-${idx}-${f.k}`, path = `${type}.${idx}.${f.k}`;
+  const err = errors.fields[path];
+  const errHtml = err ? `<span class="err">${esc(err)}</span>` : "";
+  const cls = `field${err ? " invalid" : ""}`;
+  if (f.t === "bool") return `<label class="check ${cls}"><input type="checkbox" id="${id}" ${v ? "checked" : ""}> ${esc(f.l)}${errHtml}</label>`;
+  if (f.t === "select") return `<label class="${cls}">${esc(f.l)}<select id="${id}">${f.o.map(([val, txt]) =>
+    `<option value="${esc(val)}" ${val === v ? "selected" : ""}>${esc(txt)}</option>`).join("")}</select>${errHtml}</label>`;
+  if (f.t === "int") return `<label class="${cls}">${esc(f.l)}<input id="${id}" type="number" inputmode="numeric" min="${f.min}" max="${f.max}" step="1" value="${esc(v)}">${errHtml}</label>`;
+  return `<label class="${cls}">${esc(f.l)}<input id="${id}" type="text" maxlength="80" value="${esc(v)}">${errHtml}</label>`;
 }
 
-function render() {
-  renderTabs();
-  const t = TYPES[active];
-  const items = state[active];
-  $("lists").innerHTML = `
-    <div class="toolbar"><button id="add">+ Добавить: ${t.title}</button></div>
-    ${items.length ? "" : `<div class="muted">Пока нет ресурсов этого типа.</div>`}
-    ${items.map((_, i) => `<div class="item"><button class="link danger del" data-i="${i}">удалить</button>
-      <div class="row">${t.fields.map(f => fieldHtml(active, i, f)).join("")}</div></div>`).join("")}`;
-  $("add").onclick = () => { items.push(Object.fromEntries(t.fields.map(f => [f[0], f[3]]))); render(); };
-  $("lists").querySelectorAll(".del").forEach(b => b.onclick = () => { items.splice(+b.dataset.i, 1); render(); });
-  items.forEach((item, i) => t.fields.forEach(f => {
-    const el = $(`${active}-${i}-${f[0]}`);
-    el.onchange = () => { item[f[0]] = f[2] === "bool" ? el.checked : f[2] === "int" ? Number(el.value) : el.value; renderTabs(); };
-  }));
+function itemCost(type, idx) {
+  const s = lastEstimate && sectionFor(type, idx);
+  return s ? `${fmt(s.subtotal / lastEstimate.months)} ₽/мес` : "";
 }
+
+function itemHead(type, i, it) {
+  const t = TYPES[type];
+  return `<span class="chev" aria-hidden="true">▼</span><span class="title">${esc(it.name || t.short)}</span>
+    <span class="sum">${esc(t.summary(it))}</span><span class="cost">${esc(itemCost(type, i))}</span>
+    <button type="button" class="ghost" data-act="dup" title="Дублировать" aria-label="Дублировать">⧉</button>
+    <button type="button" class="ghost danger" data-act="del" title="Удалить" aria-label="Удалить">✕</button>`;
+}
+
+function render(focusId) {
+  renderTabs();
+  const t = TYPES[active], items = state[active];
+  $("lists").innerHTML = `
+    <div class="toolbar"><button type="button" id="add">+ Добавить: ${esc(t.title)}</button>
+      ${items.length > 1 ? `<button type="button" class="ghost" id="fold">${items.every(it => collapsed.has(it)) ? "Развернуть все" : "Свернуть все"}</button>` : ""}</div>
+    ${items.length ? "" : `<div class="empty-type">Пока нет ресурсов этого типа.</div>`}
+    ${items.map((it, i) => {
+      const msg = errors.items[`${active}.${i}`];
+      return `<div class="item${collapsed.has(it) ? " collapsed" : ""}${msg || Object.keys(errors.fields).some(p => p.startsWith(`${active}.${i}.`)) ? " invalid" : ""}" data-i="${i}">
+        <div class="item-head" id="head-${active}-${i}">${itemHead(active, i, it)}</div>
+        ${msg ? `<div class="item-msg">${esc(msg)}</div>` : ""}
+        <div class="item-body"><div class="row">${t.fields.filter(f => !f.when || f.when(it)).map(f => fieldHtml(active, i, f, it)).join("")}</div></div>
+      </div>`;
+    }).join("")}`;
+  if (focusId && $(focusId)) $(focusId).focus();
+}
+
+const hasItemErrors = () => Object.keys(errors.items).length > 0 || Object.keys(errors.fields).some(p => TYPES[p.split(".")[0]]);
+// Полная перерисовка списка нужна только при смене подсветки ошибок; иначе обновляем заголовки, не трогая поля ввода.
+function refreshList(full) {
+  if (!full) { renderTabs(); updateHeads(); return; }
+  const el = document.activeElement, id = el?.id;
+  let sel = null;
+  try { sel = el && el.type === "text" ? [el.selectionStart, el.selectionEnd] : null; } catch { sel = null; }
+  render(id);
+  if (sel && $(id)) try { $(id).setSelectionRange(...sel); } catch { /* не текстовое поле */ }
+}
+
+function updateHeads() {
+  state[active].forEach((it, i) => {
+    const h = $(`head-${active}-${i}`);
+    if (h) { h.querySelector(".title").textContent = it.name || TYPES[active].short; h.querySelector(".sum").textContent = TYPES[active].summary(it); h.querySelector(".cost").textContent = itemCost(active, i); }
+  });
+}
+
+// Делегированные обработчики формы ресурсов
+$("tabs").addEventListener("click", e => {
+  const b = e.target.closest("button[data-tab]"); if (!b) return;
+  active = b.dataset.tab; render();
+});
+$("tabs").addEventListener("keydown", e => {
+  if (!["ArrowLeft", "ArrowRight"].includes(e.key)) return;
+  const keys = Object.keys(TYPES), i = keys.indexOf(active);
+  active = keys[(i + (e.key === "ArrowRight" ? 1 : keys.length - 1)) % keys.length];
+  render(); $("tabs").querySelector(`[data-tab="${active}"]`).focus();
+});
+$("lists").addEventListener("click", e => {
+  const items = state[active];
+  if (e.target.id === "add") {
+    const it = newItem(active); items.push(it); render(`${active}-${items.length - 1}-name`); changed(); return;
+  }
+  if (e.target.id === "fold") {
+    const all = items.every(it => collapsed.has(it));
+    items.forEach(it => all ? collapsed.delete(it) : collapsed.add(it)); render(); return;
+  }
+  const box = e.target.closest(".item"); if (!box) return;
+  const i = +box.dataset.i, act = e.target.closest("[data-act]")?.dataset.act;
+  if (act === "del") { items.splice(i, 1); clearErrors(); render(); changed(); return; }
+  if (act === "dup") { const copy = { ...items[i], name: `${items[i].name}-копия`.slice(0, 80) }; items.splice(i + 1, 0, copy); render(); changed(); return; }
+  if (e.target.closest(".item-head")) { const it = items[i]; collapsed.has(it) ? collapsed.delete(it) : collapsed.add(it); box.classList.toggle("collapsed"); }
+});
+function onField(e) {
+  const m = e.target.id.match(/^([a-z_]+)-(\d+)-([a-z0-9_]+)$/); if (!m || m[1] !== active) return;
+  const [, type, idx, key] = m, f = TYPES[type].fields.find(x => x.k === key), item = state[type][+idx], el = e.target;
+  if (!f || !item) return;
+  item[key] = f.t === "bool" ? el.checked : f.t === "int" ? (el.value === "" ? 0 : Number(el.value)) : el.value;
+  if (f.re && e.type === "change") render(el.id); else updateHeads();
+  changed();
+}
+$("lists").addEventListener("input", onField);
+$("lists").addEventListener("change", e => { if (e.target.tagName === "SELECT" || e.target.type === "checkbox") onField(e); });
 
 // ----------------------------------------------------------- конфигурация
 function toResource(type, item) {
-  const r = { ...item };
+  const r = {};
+  for (const f of TYPES[type].fields) if (!f.when || f.when(item)) r[f.k] = item[f.k];
   if (type === "vms" || type === "gpu_vms") {
     r.disks = [{ type: r.disk_type, size_gb: r.disk_gb }];
     if (r.disk2_gb > 0) r.disks.push({ type: r.disk2_type, size_gb: r.disk2_gb });
     delete r.disk_type; delete r.disk_gb; delete r.disk2_type; delete r.disk2_gb;
   }
   if (type === "vms" && !r.os) delete r.os;
-  if (type === "gpu_vms") {
-    if (r.cluster === "h200") { delete r.vram_gb; if (!r.h200_profile) delete r.h200_profile; }
-    else { delete r.h200_profile; delete r.h200_cards; }
-  }
   return r;
 }
 
 function buildConfig() {
-  const cfg = {
-    customer: $("customer").value.trim() || undefined,
-    months: Number($("months").value), discount_percent: Number($("discount").value), vat_percent: Number($("vat").value),
-  };
+  const num = id => $(id).value === "" ? 0 : Number($(id).value);
+  const cfg = { months: num("months"), discount_percent: num("discount"), vat_percent: num("vat") };
+  const customer = $("customer").value.trim();
+  if (customer) cfg.customer = customer;
   for (const [k, items] of Object.entries(state)) if (items.length) cfg[k] = items.map(it => toResource(k, it));
-  const bk = Number($("bk_protected").value);
-  if (bk > 0) cfg.backup = { protected_gb: bk, stored_copies_gb: Number($("bk_stored").value) };
-  const net = { public_ips: Number($("net_ips").value) };
+  const bk = num("bk_protected");
+  if (bk > 0) cfg.backup = { protected_gb: bk, stored_copies_gb: num("bk_stored") };
+  const net = {};
+  if (num("net_ips")) net.public_ips = num("net_ips");
   if ($("net_bw").value) net.bandwidth_mbps = Number($("net_bw").value);
-  if (net.public_ips || net.bandwidth_mbps) cfg.network = net;
+  if (Object.keys(net).length) cfg.network = net;
   return cfg;
 }
 
 function loadConfig(cfg) {
+  if (!cfg || typeof cfg !== "object" || Array.isArray(cfg)) throw new Error("ожидается JSON-объект конфигурации");
   $("customer").value = cfg.customer || "";
   $("months").value = cfg.months ?? 1; $("discount").value = cfg.discount_percent ?? 0; $("vat").value = cfg.vat_percent ?? 22;
-  for (const k of Object.keys(TYPES)) state[k] = (cfg[k] || []).map(r => {
-    const item = Object.fromEntries(TYPES[k].fields.map(f => [f[0], r[f[0]] ?? f[3]]));
-    if (r.disks && r.disks.length) {
-      item.disk_type = r.disks[0].type; item.disk_gb = r.disks[0].size_gb;
-      if (r.disks[1]) { item.disk2_type = r.disks[1].type; item.disk2_gb = r.disks[1].size_gb; }
+  for (const k of Object.keys(TYPES)) state[k] = (Array.isArray(cfg[k]) ? cfg[k] : []).map(r => {
+    const item = Object.fromEntries(TYPES[k].fields.map(f => [f.k, r[f.k] ?? f.d]));
+    if (k === "vms" && !r.os) item.os = "";
+    if (Array.isArray(r.disks) && r.disks.length) {
+      item.disk_type = r.disks[0].type ?? "ssd"; item.disk_gb = r.disks[0].size_gb;
+      if (r.disks[1]) { item.disk2_type = r.disks[1].type ?? "sata"; item.disk2_gb = r.disks[1].size_gb; }
     }
     return item;
   });
   $("bk_protected").value = cfg.backup?.protected_gb ?? 0; $("bk_stored").value = cfg.backup?.stored_copies_gb ?? 0;
   $("net_ips").value = cfg.network?.public_ips ?? 0; $("net_bw").value = cfg.network?.bandwidth_mbps ?? "";
   active = Object.keys(TYPES).find(k => state[k].length) || "vms";
-  render();
+  clearErrors(); syncBackup(); render();
 }
+
+const hasResources = cfg => SECTION_ORDER.some(k => k === "network" ? cfg.network : cfg[k] && (!Array.isArray(cfg[k]) || cfg[k].length));
+function syncBackup() { $("bk_stored").disabled = !(Number($("bk_protected").value) > 0); }
 
 // ----------------------------------------------------------- расчёт
-async function calculate() {
+let timer = 0, seq = 0, ctrl = null;
+function changed() {
+  store.set("turbo-calc:draft", JSON.stringify(buildConfig()));
+  if (lastEstimate) $("result").classList.add("stale");
+  if (!$("auto").checked) { $("status").textContent = "есть изменения — нажмите «Рассчитать смету»"; return; }
+  clearTimeout(timer);
+  timer = setTimeout(() => calculate(true), 350);
+}
+
+async function calculate(silent = false) {
+  clearTimeout(timer);
   const cfg = buildConfig();
-  $("json").textContent = JSON.stringify(cfg, null, 2);
+  if (!hasResources(cfg)) { clearErrors(); showEmpty(); return; }
+  const my = ++seq;
+  ctrl?.abort(); ctrl = new AbortController();
   $("status").textContent = "считаю…";
+  $("calc").disabled = true;
   const started = performance.now();
   try {
-    const r = await fetch("/v1/estimate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cfg) });
-    const body = await r.json();
-    $("status").textContent = `${Math.round(performance.now() - started)} мс · ${r.headers.get("X-Request-ID") || ""}`;
-    if (!r.ok) { showError(body.detail); return; }
-    showEstimate(body);
-  } catch (e) { showError(String(e)); $("status").textContent = ""; }
+    const r = await fetch("/v1/estimate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cfg), signal: ctrl.signal });
+    const body = await r.json().catch(() => ({ detail: `HTTP ${r.status}` }));
+    if (my !== seq) return;
+    $("status").textContent = `${r.ok ? "готово" : "ошибка"} · ${Math.round(performance.now() - started)} мс`;
+    $("status").title = r.headers.get("X-Request-ID") ? `X-Request-ID: ${r.headers.get("X-Request-ID")}` : "";
+    const hadItemErrors = hasItemErrors();
+    if (!r.ok) { setErrors(body.detail); showError(); refreshList(hadItemErrors || hasItemErrors()); return; }
+    clearErrors(); lastEstimate = body; lastConfig = cfg;
+    showEstimate(body); refreshList(hadItemErrors);
+  } catch (e) {
+    if (e.name === "AbortError" || my !== seq) return;
+    $("status").textContent = "";
+    errors = { items: {}, fields: {}, general: [`Сервер недоступен: ${e.message}`] };
+    showError(); if (!silent) toast("Не удалось связаться с сервером");
+  } finally { if (my === seq) $("calc").disabled = false; }
 }
 
-function showError(detail) {
-  const text = Array.isArray(detail) ? detail.map(d => `${(d.loc || []).slice(1).join(".") || "конфигурация"}: ${d.msg}`).join("\n") : String(detail);
-  $("result").innerHTML = `<h2>Смета</h2><div class="error">Ошибка в конфигурации:\n${text}</div>`;
+// ----------------------------------------------------------- ошибки валидации
+function translate(d) {
+  const c = d.ctx || {};
+  switch (d.type) {
+    case "greater_than_equal": return `значение не меньше ${c.ge}`;
+    case "less_than_equal": return `значение не больше ${c.le}`;
+    case "greater_than": return `значение больше ${c.gt}`;
+    case "less_than": return `значение меньше ${c.lt}`;
+    case "int_parsing": case "int_type": case "int_from_float": return "нужно целое число";
+    case "decimal_parsing": case "decimal_type": return "нужно число";
+    case "decimal_max_places": return "не больше 2 знаков после запятой";
+    case "string_too_short": return "поле не может быть пустым";
+    case "string_too_long": return `не длиннее ${c.max_length} символов`;
+    case "literal_error": return "недопустимое значение";
+    case "missing": return "обязательное поле";
+    case "extra_forbidden": return "неизвестное поле";
+    case "too_long": return `не больше ${c.max_length} элементов`;
+    default: return String(d.msg || "").replace(/^Value error, /, "");
+  }
 }
+
+function setErrors(detail) {
+  errors = { items: {}, fields: {}, general: [] };
+  if (!Array.isArray(detail)) { errors.general.push(String(detail ?? "неизвестная ошибка")); return; }
+  for (const d of detail) {
+    const loc = (d.loc || []).filter(x => x !== "body"), msg = translate(d);
+    const [top, idx, ...rest] = loc;
+    if (TYPES[top] && Number.isInteger(idx)) {
+      let key = rest[0];
+      if (key === "disks") key = rest[1] === 1 ? "disk2_gb" : "disk_gb";
+      if (key && TYPES[top].fields.some(f => f.k === key)) errors.fields[`${top}.${idx}.${key}`] = msg;
+      else errors.items[`${top}.${idx}`] = msg;
+      continue;
+    }
+    const map = { customer: "customer", months: "months", discount_percent: "discount_percent", vat_percent: "vat_percent" };
+    const path = loc.join(".");
+    const fieldEl = document.querySelector(`#form-col .field[data-path="${CSS.escape(path)}"]`);
+    if (fieldEl || map[top]) errors.fields[path] = msg;
+    else errors.general.push(loc.length ? `${path}: ${msg}` : msg);
+  }
+  // Переключиться на вкладку с первой ошибкой, если текущая чистая
+  const bad = Object.keys({ ...errors.items, ...errors.fields }).map(p => p.split(".")[0]).filter(k => TYPES[k]);
+  if (bad.length && !bad.includes(active)) active = bad[0];
+  // Ошибки в статичных полях формы
+  paintStaticErrors();
+}
+
+function paintStaticErrors() {
+  document.querySelectorAll("#form-col .field[data-path]").forEach(el => {
+    const msg = errors.fields[el.dataset.path];
+    el.classList.toggle("invalid", !!msg);
+    el.querySelector(".err")?.remove();
+    if (msg) el.insertAdjacentHTML("beforeend", `<span class="err">${esc(msg)}</span>`);
+  });
+}
+function clearErrors() { errors = { items: {}, fields: {}, general: [] }; paintStaticErrors(); }
+
+function describePath(p) {
+  const [type, idx, key] = p.split(".");
+  if (!TYPES[type]) return document.querySelector(`#form-col .field[data-path="${CSS.escape(p)}"]`)?.firstChild?.textContent?.trim() || p;
+  const it = state[type][+idx], f = TYPES[type].fields.find(x => x.k === key);
+  return `${TYPES[type].short} «${it?.name ?? idx}»${f ? ` → ${f.l}` : ""}`;
+}
+
+function showError() {
+  const list = [
+    ...Object.entries(errors.items).map(([p, m]) => [p, `${describePath(p)}: ${m}`]),
+    ...Object.entries(errors.fields).map(([p, m]) => [p, `${describePath(p)}: ${m}`]),
+    ...errors.general.map(m => [null, m]),
+  ];
+  $("result").classList.remove("stale");
+  $("result").innerHTML = `<h2>Смета</h2><div class="error" role="alert"><strong>Конфигурация не прошла проверку</strong>
+    <ul>${list.map(([p, m]) => `<li>${p ? `<a href="#" data-goto="${esc(p)}">${esc(m)}</a>` : esc(m)}</li>`).join("")}</ul></div>
+    ${lastEstimate ? `<p class="hint">Исправьте ошибки — смета пересчитается.</p>` : ""}`;
+  $("mbar").classList.remove("on");
+}
+
+$("result").addEventListener("click", e => {
+  const a = e.target.closest("[data-goto]"); if (!a) return;
+  e.preventDefault();
+  const [type, idx, key] = a.dataset.goto.split(".");
+  if (TYPES[type]) {
+    active = type; const it = state[type][+idx]; if (it) collapsed.delete(it);
+    render(key ? `${type}-${idx}-${key}` : undefined);
+    document.querySelector(`.item[data-i="${idx}"]`)?.scrollIntoView({ block: "center", behavior: "smooth" });
+  } else {
+    const el = document.querySelector(`#form-col .field[data-path="${CSS.escape(a.dataset.goto)}"] input, #form-col .field[data-path="${CSS.escape(a.dataset.goto)}"] select`);
+    el?.focus(); el?.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+});
+
+// ----------------------------------------------------------- смета
+// Сопоставляет раздел сметы с ресурсом конфигурации (по одному разделу на ресурс, порядок как в калькуляторе).
+function sectionMap(cfg, est) {
+  const out = []; let i = 0;
+  for (const k of SECTION_ORDER) {
+    const n = k === "backup" ? (cfg.backup ? 1 : 0) : k === "network" ? (est.sections.length - i) : (cfg[k] || []).length;
+    for (let j = 0; j < n; j++) out.push({ cat: k, idx: j, s: est.sections[i++] });
+  }
+  return out;
+}
+function sectionFor(type, idx) {
+  if (!lastEstimate || !lastConfig) return null;
+  // Конфигурация могла измениться после расчёта: показываем цену только если состав ресурсов тот же.
+  if ((lastConfig[type] || []).length !== state[type].length) return null;
+  return sectionMap(lastConfig, lastEstimate).find(x => x.cat === type && x.idx === idx)?.s || null;
+}
+
+function showEmpty() {
+  lastEstimate = null; lastConfig = null;
+  $("result").classList.remove("stale");
+  $("result").innerHTML = `<h2>Смета</h2><div class="empty">
+    <div>Добавьте ресурсы — смета появится здесь.</div>
+    <div class="toolbar">${Object.entries(TYPES).slice(0, 4).map(([k, t]) => `<button type="button" data-quick="${k}">+ ${esc(t.short)}</button>`).join("")}</div>
+    <div class="hint" style="margin-top:14px">или загрузите пример в шапке страницы · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> — расчёт</div></div>`;
+  $("status").textContent = "";
+  $("mbar").classList.remove("on");
+}
+$("result").addEventListener("click", e => {
+  const b = e.target.closest("[data-quick]"); if (!b) return;
+  active = b.dataset.quick; state[active].push(newItem(active)); render(`${active}-${state[active].length - 1}-name`); changed();
+});
 
 function showEstimate(e) {
-  const rows = e.sections.map(s => `
-    <tr class="section"><td colspan="5">${s.title}</td></tr>
-    ${s.lines.map(l => `<tr><td>${l.name}</td><td class="num">${fmtQty(l.quantity)}</td><td>${l.unit}</td><td class="num">${fmtPrice(l.unit_price)}</td><td class="num">${fmt(l.amount)}</td></tr>`).join("")}
-    <tr class="subtotal"><td colspan="4">Итого по разделу</td><td class="num">${fmt(s.subtotal)}</td></tr>`).join("");
+  const months = e.months;
+  const map = sectionMap(lastConfig, e);
+  const byCat = {};
+  for (const { cat, s } of map) byCat[cat] = (byCat[cat] || 0) + Number(s.subtotal);
+  const cats = SECTION_ORDER.filter(k => byCat[k] > 0);
+  const sum = Number(e.subtotal) || 1;
+  const monthlyVat = Number(e.total) / months;
+
+  const rows = map.map(({ cat, s }, i) => `
+    <tbody class="sec${map.length > 6 ? " collapsed" : ""}" data-sec="${i}">
+      <tr class="sh"><td colspan="4"><span class="chev" aria-hidden="true">▼</span><span class="sw" style="background:var(${CATS[cat].color})"></span>${esc(s.title)}</td>
+        <td class="num">${fmt(s.subtotal)}${months > 1 ? `<div class="pm">${fmt(s.subtotal / months)}/мес</div>` : ""}</td></tr>
+      ${s.lines.map(l => `<tr class="ln"><td title="${esc(l.sku)}">${esc(l.name)}</td><td class="num">${fmtQty(l.quantity)}</td><td>${esc(l.unit)}</td>
+        <td class="num">${fmtPrice(l.unit_price)}</td><td class="num">${fmt(l.amount)}</td></tr>`).join("")}
+    </tbody>`).join("");
+
+  $("result").classList.remove("stale");
   $("result").innerHTML = `
-    <h2>Смета${e.customer ? ` — ${e.customer}` : ""} <span class="muted">${e.months} мес. · прайс-лист от ${e.pricelist_captured_at}</span></h2>
-    <table><thead><tr><th>Позиция</th><th class="num">Кол-во</th><th>Ед.</th><th class="num">Цена</th><th class="num">Сумма, ₽</th></tr></thead><tbody>${rows}</tbody></table>
-    <div class="totals">
-      <div>Сумма без НДС</div><div class="num">${fmt(e.subtotal)} ₽</div>
-      ${Number(e.discount_amount) ? `<div>Скидка ${e.discount_percent} %</div><div class="num">− ${fmt(e.discount_amount)} ₽</div>
-      <div>Сумма без НДС после скидки</div><div class="num">${fmt(e.total_ex_vat)} ₽</div>` : ""}
-      <div>НДС ${e.vat_percent} %</div><div class="num">${fmt(e.vat_amount)} ₽</div>
-      <div class="big">Итого с НДС за ${e.months} мес.</div><div class="num big">${fmt(e.total)} ₽</div>
-      <div class="muted">Среднемесячный платёж без НДС</div><div class="num muted">${fmt(e.monthly_ex_vat)} ₽</div>
+    <h2><span>Смета${e.customer ? ` — ${esc(e.customer)}` : ""}</span><span class="hint">${months} мес. · прайс-лист от ${esc(e.pricelist_captured_at)}</span></h2>
+    <div class="kpis">
+      <div class="kpi main"><div class="k">Итого с НДС за ${months} мес.</div><div class="v">${rub(e.total)}</div></div>
+      <div class="kpi"><div class="k">В месяц с НДС</div><div class="v">${rub(monthlyVat)}</div></div>
+      <div class="kpi"><div class="k">В месяц без НДС</div><div class="v">${rub(e.monthly_ex_vat)}</div></div>
     </div>
-    <div class="toolbar" style="margin-top:12px"><button id="dl">Скачать смету (JSON)</button></div>`;
-  $("dl").onclick = () => {
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(new Blob([JSON.stringify(e, null, 2)], { type: "application/json" }));
-    a.download = "smeta.json"; a.click();
-  };
+    ${cats.length > 1 ? `
+    <div class="hint">Структура затрат без НДС</div>
+    <div class="bar" role="img" aria-label="Структура затрат по сегментам">${cats.map(k =>
+      `<span style="flex:${byCat[k]};background:var(${CATS[k].color})" data-tip="${esc(CATS[k].title)}: ${rub(byCat[k])} · ${(byCat[k] / sum * 100).toFixed(1).replace(".", ",")} %"></span>`).join("")}</div>
+    <div class="legend">${cats.map(k => `<div><span class="sw" style="background:var(${CATS[k].color})"></span><span class="nm">${esc(CATS[k].title)}</span>
+      <span class="vl">${(byCat[k] / sum * 100).toFixed(1).replace(".", ",")} %</span></div>`).join("")}</div>` : ""}
+    <div class="toolbar no-print" style="justify-content:flex-end;margin-bottom:6px">
+      <button type="button" class="ghost" id="fold-sec">${map.length > 6 ? "Развернуть все разделы" : "Свернуть все разделы"}</button></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Позиция</th><th class="num">Кол-во</th><th>Ед.</th><th class="num">Цена, ₽</th><th class="num">Сумма, ₽</th></tr></thead>
+      ${rows}
+    </table></div>
+    <div class="totals">
+      <div>Сумма без НДС</div><div class="num">${rub(e.subtotal)}</div>
+      ${Number(e.discount_amount) ? `<div>Скидка ${esc(e.discount_percent)} %</div><div class="num">− ${rub(e.discount_amount)}</div>
+      <div>Сумма без НДС после скидки</div><div class="num">${rub(e.total_ex_vat)}</div>` : ""}
+      <div>НДС ${esc(e.vat_percent)} %</div><div class="num">${rub(e.vat_amount)}</div>
+      <div class="big">Итого с НДС за ${months} мес.</div><div class="num big">${rub(e.total)}</div>
+      <div class="hint">Среднемесячный платёж без НДС</div><div class="num hint">${rub(e.monthly_ex_vat)}</div>
+    </div>
+    <div class="toolbar no-print" style="margin-top:14px">
+      <button type="button" id="dl-csv">Скачать в Excel</button>
+      <button type="button" id="print">Печать / PDF</button>
+      <button type="button" id="share">Ссылка на расчёт</button>
+    </div>`;
+
+  $("mbar-k").textContent = `Итого с НДС за ${months} мес.`;
+  $("mbar-v").textContent = rub(e.total);
+  $("mbar").classList.add("on");
 }
+
+$("result").addEventListener("click", ev => {
+  const sh = ev.target.closest("tr.sh");
+  if (sh) { sh.parentElement.classList.toggle("collapsed"); syncFoldLabel(); return; }
+  const id = ev.target.id, e = lastEstimate;
+  if (id === "fold-sec") {
+    const secs = [...$("result").querySelectorAll("tbody.sec")], all = secs.every(s => s.classList.contains("collapsed"));
+    secs.forEach(s => s.classList.toggle("collapsed", !all)); syncFoldLabel(); return;
+  }
+  if (!e) return;
+  if (id === "dl-csv") download(`${fileSlug(e.customer)}.csv`, toCsv(e), "text/csv;charset=utf-8");
+  if (id === "print") window.print();
+  if (id === "share") shareLink();
+});
+function syncFoldLabel() {
+  const secs = [...$("result").querySelectorAll("tbody.sec")], b = $("fold-sec");
+  if (b) b.textContent = secs.every(s => s.classList.contains("collapsed")) ? "Развернуть все разделы" : "Свернуть все разделы";
+}
+
+// Подсказка для полосы структуры затрат
+document.addEventListener("mouseover", e => {
+  const t = e.target.closest("[data-tip]"), tip = $("tip");
+  if (!t) { tip.hidden = true; return; }
+  tip.textContent = t.dataset.tip; tip.hidden = false;
+});
+document.addEventListener("mousemove", e => {
+  const tip = $("tip"); if (tip.hidden) return;
+  const x = Math.min(e.clientX + 12, innerWidth - tip.offsetWidth - 8);
+  tip.style.left = `${x}px`; tip.style.top = `${e.clientY + 16}px`;
+});
+
+function toCsv(e) {
+  const n = v => String(v).replace(".", ",");
+  const q = v => /[";\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v);
+  const rows = [["Раздел", "Позиция", "SKU", "Количество", "Ед.", "Цена без НДС", "Сумма без НДС"]];
+  for (const s of e.sections) for (const l of s.lines) rows.push([s.title, l.name, l.sku, n(l.quantity), l.unit, n(l.unit_price), n(l.amount)]);
+  rows.push([], ["Сумма без НДС", "", "", "", "", "", n(e.subtotal)]);
+  if (Number(e.discount_amount)) rows.push([`Скидка ${n(e.discount_percent)} %`, "", "", "", "", "", n(-e.discount_amount)]);
+  rows.push([`НДС ${n(e.vat_percent)} %`, "", "", "", "", "", n(e.vat_amount)], [`Итого с НДС за ${e.months} мес.`, "", "", "", "", "", n(e.total)]);
+  return "﻿" + rows.map(r => r.map(q).join(";")).join("\r\n");
+}
+
+// ----------------------------------------------------------- ссылка на расчёт
+const b64enc = s => btoa(String.fromCharCode(...new TextEncoder().encode(s))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+const b64dec = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), c => c.charCodeAt(0)));
+
+async function shareLink() {
+  const url = `${location.origin}${location.pathname}#cfg=${b64enc(JSON.stringify(buildConfig()))}`;
+  history.replaceState(null, "", url);
+  try { await navigator.clipboard.writeText(url); toast("Ссылка на расчёт скопирована"); } catch { toast("Ссылка — в адресной строке"); }
+}
+
+// ----------------------------------------------------------- тема
+const THEMES = ["auto", "light", "dark"], THEME_LABEL = { auto: "◐ Авто", light: "☀ Светлая", dark: "☾ Тёмная" };
+function applyTheme(t) {
+  if (t === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.dataset.theme = t;
+  $("theme").textContent = THEME_LABEL[t];
+}
+let theme = THEMES.includes(store.get("turbo-calc:theme")) ? store.get("turbo-calc:theme") : "auto";
+applyTheme(theme);
+$("theme").onclick = () => { theme = THEMES[(THEMES.indexOf(theme) + 1) % 3]; store.set("turbo-calc:theme", theme); applyTheme(theme); };
 
 // ----------------------------------------------------------- примеры
 const EXAMPLES = {
@@ -295,17 +806,39 @@ const EXAMPLES = {
 };
 
 // ----------------------------------------------------------- запуск
-$("net_bw").innerHTML = `<option value="">без канала</option>` + BW.map(b => `<option value="${b}">${b >= 1000 ? b / 1000 + " Гбит/с" : b + " Мбит/с"}</option>`).join("");
-$("calc").onclick = calculate;
-$("show-json").onclick = () => { $("json").textContent = JSON.stringify(buildConfig(), null, 2); $("json").hidden = !$("json").hidden; };
-$("ex-web").onclick = () => { loadConfig(EXAMPLES.web); calculate(); };
-$("ex-ai").onclick = () => { loadConfig(EXAMPLES.ai); calculate(); };
-$("clear").onclick = () => { loadConfig({ months: 12 }); $("result").innerHTML = `<h2>Смета</h2><div class="empty">Добавьте ресурсы и нажмите «Рассчитать смету»</div>`; };
-fetch("/health").then(r => r.json()).then(h => { $("meta").textContent = `прайс-лист turbocloud.ru от ${h.pricelist_captured_at} · ${h.pricelist_items} позиций · v${h.version}`; }).catch(() => { $("meta").textContent = "сервер недоступен"; });
-render();
-// Автозагрузка примера по адресу: /#example=web или /#example=ai
-const auto = new URLSearchParams(location.hash.slice(1)).get("example");
-if (auto && EXAMPLES[auto]) { loadConfig(EXAMPLES[auto]); calculate(); }
+$("net_bw").innerHTML = `<option value="">без канала</option>` + BW.map(b => `<option value="${b}">${bwLabel(b)}</option>`).join("");
+$("calc").onclick = () => calculate();
+$("auto").checked = store.get("turbo-calc:auto") !== "0";
+$("auto").onchange = () => { store.set("turbo-calc:auto", $("auto").checked ? "1" : "0"); if ($("auto").checked) calculate(true); };
+$("ex-web").onclick = () => { loadConfig(EXAMPLES.web); changed(); calculate(); };
+$("ex-ai").onclick = () => { loadConfig(EXAMPLES.ai); changed(); calculate(); };
+$("clear").onclick = () => {
+  loadConfig({ months: 12 }); store.set("turbo-calc:draft", "");
+  history.replaceState(null, "", location.pathname); showEmpty();
+};
+$("mbar-go").onclick = () => $("result-col").scrollIntoView({ behavior: "smooth" });
+for (const id of ["customer", "months", "discount", "vat", "net_ips", "net_bw", "bk_protected", "bk_stored"]) {
+  $(id).addEventListener(id === "net_bw" ? "change" : "input", () => { if (id === "bk_protected") syncBackup(); changed(); });
+}
+addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); calculate(); } });
+
+fetch("/health").then(r => r.json()).then(h => {
+  $("meta").textContent = `прайс-лист turbocloud.ru от ${h.pricelist_captured_at} · ${h.pricelist_items} позиций · v${h.version} · цены без НДС`;
+}).catch(() => { $("meta").textContent = "сервер недоступен"; });
+
+// Начальное состояние: /#example=web|ai, /#cfg=<base64url JSON>, черновик из localStorage, пусто.
+(function init() {
+  const h = new URLSearchParams(location.hash.slice(1));
+  let cfg = null;
+  try {
+    if (h.get("example") && EXAMPLES[h.get("example")]) cfg = EXAMPLES[h.get("example")];
+    else if (h.get("cfg")) cfg = JSON.parse(b64dec(h.get("cfg")));
+    else if (store.get("turbo-calc:draft")) cfg = JSON.parse(store.get("turbo-calc:draft"));
+  } catch { cfg = null; toast("Не удалось прочитать сохранённую конфигурацию"); }
+  try { if (cfg) loadConfig(cfg); } catch { cfg = null; }
+  syncBackup(); render();
+  if (cfg && hasResources(buildConfig())) calculate(true); else showEmpty();
+})();
 </script>
 </body>
 </html>
